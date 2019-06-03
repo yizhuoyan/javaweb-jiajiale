@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>录入VIP客户</title>
+    <link  rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+	<header>
+		<h1>查看/修改VIP客户信息</h1>
+	</header>
+	<main>
+        <form class="label6em">
+		 <p>
+            <label>*手机号:<input type="text" v-model="e.mobile"  placeholder="将作为VIP编号"></label>
+        </p>
+        <p>
+            <label>*会员等级:
+            	<select id="rankSelect" v-model="e.rankId">
+            	</select>
+            </label>
+        </p>
+        <p>
+            <label>*姓名:<input type="text" v-model="e.name" ></label>
+        </p>
+        <p>
+            <label>*性别:</label>
+            <label>
+            <input  name="sex" type="radio" value="1" checked>男
+            </label>
+            <label>
+            <input  name="sex" type="radio" value="0">女
+            </label>
+        </p>
+        <p>
+            <label>生日:<input type="date"  v-model="e.birthday"></label>
+        </p>
+        <p>
+            <label>QQ:<input type="text" v-model="e.qq" ></label>
+        </p>
+        <p>
+            <label>Email:<input type="text"  v-model="e.email"></label>
+        </p>
+        <p>
+            <label>邮编:<input type="text" v-model="e.zipCode"></label>
+        </p>
+        <p>
+            <label>邮寄地址:<input type="text" v-model="e.address" ></label>
+        </p>
+        <p>
+            <label>备注:<textarea v-model="e.remark"></textarea></label>
+        </p>
+        </form>
+        <p>
+            <button @click="modify">确定</button>
+            <a href="/vip/list.html">返回</a>	
+        </p>
+
+	</main>
+	
+	<script src="/js/jquery.js"></script>
+	 <script
+		src="/js/yi.toast.js"></script>
+		<script src="/js/vue.js"></script>
+		
+		<script>
+			const vue=new Vue({
+				el:"main",
+				data:{
+					e:{
+					    _method:"PUT",
+						//TODO 获取id
+						id:location.hash.substr(1)
+					}
+					
+				},
+				methods:{
+					modify:function(){
+						$.post("/api/vip",this.e,function(resp){
+							
+							if(resp.code!=="ok"){
+								toast(resp.message);
+							}else{
+								toast("修改成功，请返回!");
+								//vue.e=resp.data;
+							}
+						});
+					}
+				},
+				created:function(){
+				    let id=this.e.id;
+					$.getJSON(`/api/vip/{id}`,function(resp){
+						if(resp.code!=="ok"){
+							toast(resp.message);
+						}else{
+							console.log(resp);
+							vue.e=resp.data;
+						}
+					});
+					
+				}
+			});
+		
+		</script>
+</body>
+</html>

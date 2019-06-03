@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>消费记录管理</title>
+    <link rel="stylesheet" href="/css/table-data.css">
+</head>
+<body>
+<artical>
+    <header>
+        <p>
+            <a href="/vip-consume/add.html">新增</a>
+        </p>
+        <p>
+            <input v-model="key">
+        </p>
+    </header>
+    <main>
+
+        <table class="data">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>操作</th>
+                <th>客户(手机号)</th>
+                <th>关联订单</th>
+                <th>消费金额</th>
+                <th>消费时间</th>
+                <th>创建人</th>
+            </tr>
+            </thead>
+            <tbody v-if="resp===null">
+            <tr>
+                <td colspan="99">加载中...</td>
+            </tr>
+            </tbody>
+            <tbody v-else-if="resp.code!=='ok'">
+            <tr>
+                <td colspan="99">{{resp.message}}</td>
+            </tr>
+            </tbody>
+            <tbody v-else>
+            <template v-if="resp.data.totalRows>0">
+                <tr v-for="(row,i) in resp.data.rows">
+                    <td>{{i+1}}</td>
+                    <td><a :href="'/vip-consume/check.html#'+row.id">详情</a></td>
+                    <td>{{row.vipName}}({{row.mobile}})</td>
+                    <td>{{row.orderId}}</td>
+                    <td>{{row.consumeMoney}}</td>
+                    <td>{{row.consumeTime}}</td>
+                    <td>{{row.createUserName}}</td>
+                </tr>
+            </template>
+            <tr v-else>
+                <td colspan="99">很抱歉，未找到相关数据</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p v-if="resp!=null&&resp.data.totalRows>0">
+		<span> 共<b>{{resp.data.totalRows}}</b>条记录 每页<b>{{resp.data.pageSize}}</b>条
+			共<b>{{resp.data.totalPages}}</b>页
+		</span> <span> 
+		<button @click="pageNo-=1">上一页</button>
+		 <b>{{resp.data.pageNo}}</b>
+		<button @click="pageNo+=1">下一页</button>
+		</span>
+        </p>
+    </main>
+    <artical>
+        <script src="/js/axios.min.js"></script>
+        <script
+                src="/js/yi.toast.js"></script>
+        <script src="/js/vue.js"></script>
+        <script>
+            //网页加载完毕获取等级列表
+            const vue = new Vue({
+                el: "body>artical",//css选择器
+                data: {
+                    resp: null,//应答对象
+                    pageNo: 1,//输入页面
+                    pageSize: 5,// 输入每页大小
+                    key: null//输入的查询关键字
+                },
+                watch: {
+                    //当页码变化时
+                    pageNo: function (newV, oldV) {
+                        this.query();
+                    },
+                    key: function (newV, oldV) {
+                        this.query();
+                    }
+                },
+                methods: {
+                    //后台查询
+                    query: function (evt) {
+                        if (this.resp != null) {
+                            if (this.resp.code === "ok") {
+                                if (this.resp.data.totalRows > 0) {
+                                    if (this.pageNo < 1) {
+                                        return;
+                                    }
+                                    if (this.pageNo > this.resp.data.totalPages) {
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                        axios.get("/api/vipconsume", {
+                            params: {
+                                pageNo: this.pageNo,
+                                pageSize: this.pageSize,
+                                key: this.key
+                            }
+                        }).then(resp=>{
+                            console.log(resp);
+                            vue.resp = resp;
+                        })
+                    }
+                },
+                //当vue对象被创建时
+                created: function () {
+                    this.query();
+                }
+            });
+        </script>
+</body>
+</html>

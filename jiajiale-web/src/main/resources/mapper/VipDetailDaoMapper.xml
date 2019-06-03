@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.dao.VipDetailDao">
+	<insert id="insert">
+  		insert into vip_detail(
+  		id,account,mobile,name,sex,birthday,
+  		qq,email,address,zip_code,rank_id,
+  		total_discount_money,total_consume_money,
+  		remark,create_user_id,last_consume_time,create_time
+  		)values(
+  		#{id},#{account},#{mobile},#{name},#{sex},#{birthday},
+  		#{qq},#{email},#{address},#{zipCode},#{rankId},
+  		#{totalDiscountMoney},#{totalConsumeMoney},
+  		#{remark},#{createUserId},#{lastConsumeTime},#{createTime}
+  		)
+  		
+  	</insert>
+  	
+  	
+  	<update id="update">
+  	update vip_detail
+  	<set>
+      <if test="e.mobile != null">mobile=#{e.mobile},</if>
+      <if test="e.name != null">name=#{e.name},</if>
+      <if test="e.sex != null">sex=#{e.sex},</if>
+      <if test="e.birthDay != null">birth_day=#{e.birthDay},</if>
+      <if test="e.qq != null">qq=#{e.qq},</if>
+      <if test="e.email != null">email=#{e.email},</if>
+      <if test="e.address != null">address=#{e.address},</if>
+      <if test="e.zipCode != null">zip_code=#{e.zipCode},</if>
+      <if test="e.rank != null">rank_id=#{e.rank.id},</if>
+      <if test="e.totalDiscountMoney != null">total_discount_money=#{e.totalDiscountMoney},</if>
+      <if test="e.totalConsumeMoney != null">total_comsume_money=#{e.totalConsumeMoney},</if>
+      <if test="e.remark != null">remark=#{e.remark},</if>
+      <if test="e.lastConsumeTime != null">last_consume_time=#{e.lastConsumeTime},</if>
+    </set>
+ 	 where id=#{id}
+  	</update>
+  	
+  	<delete id="delete">
+  		delete from vip_detail where id=#{id}
+  	</delete>
+  	
+  	<select id="select" resultMap="vipDetailMap">
+  		select * from vip_detail where 
+  		${column}=#{value}
+  	</select>
+  	
+  		<select id="exists" resultType="boolean">
+  		select count(*)>0 from vip_detail where 
+  		${column}=#{value}
+  	</select>
+  	
+	<select id="selectById" resultMap="vipDetailMap">
+  		select * from vip_detail where 
+  		id=#{id}
+  	</select>
+  	
+  	<select id="selectByKey" resultMap="vipDetailMap">
+  		select * from vip_detail where 1=1
+  		<if test="key!=null">
+  			and (account like #{key}
+  			or name like #{key}
+  			or mobile like #{key})
+  		</if>
+  		order by account
+  		
+  	</select>
+  	
+  	<select id="selectAll" resultMap="vipDetailMap">
+  		select * from vip_detail 
+  		<if test="orderByColumn!=null">
+  			order ${orderByColumn};
+  		</if>
+  	</select>
+  	
+  	<resultMap type="VipDetailEntity" id="vipDetailMap">
+  		<id column="id" property="id"/>
+  		<association property="rank" 
+  		column="rank_id" 
+  		fetchType="eager"
+  		select="com.vip.dao.VipRankDao.selectById" >
+  		</association>
+  		<association property="createUser" 
+  		column="create_User_id" 
+  		fetchType="lazy"
+  		select="com.vip.dao.SysUserDao.selectById" >
+  		</association>
+  	</resultMap>
+</mapper>

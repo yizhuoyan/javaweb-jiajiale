@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.dao.VipConsumeDao">
+	<insert id="insert">
+  		insert into vip_consume(
+  		id,vip_id,consume_time,order_id,discount_money,
+  		actual_pay_money,consume_money,create_user_id,
+  		status,remark,enjoy_discount
+  		)values(
+  		#{id},#{vipId},#{consumeTime},#{orderId},#{discountMoney},
+  		#{actualPayMoney},#{consumeMoney},#{createUserId},
+  		#{status},#{remark},#{enjoyDiscount})
+  	</insert>
+  	
+  	
+  	<update id="update">
+  	update vip_consume
+  	<set>
+      <if test="e.orderId != null">order_Id=#{e.orderId},</if>
+      <if test="e.actualPayMoney != null">actual_pay_money=#{e.actualPayMoney},</if>
+      <if test="e.status != null">status=#{e.status},</if>
+    </set>
+ 	 where id=#{id}
+  	</update>
+  	<select id="select" resultMap="vipConsumeMap">
+  		select * from vip_consume where 
+  		${column}=#{value}
+  	</select>
+	
+  	
+  		<select id="selectByKey" resultMap="vipConsumeMap">
+  		select * from vip_consume where status=0
+	  		<if test="key!=null">
+	  			and  (
+		  			vip_id in(
+		  				select id from vip_detail 
+		  				where name like #{key}
+		  				or mobile like #{key}
+		  			)
+		  			or order_id=#{key}
+		  			or remark like #{key}
+		  		)
+	  		</if>
+  		
+  		order by consume_time desc
+  		
+  	</select>
+   		<select id="selectByVipId" resultMap="vipConsumeMap">
+  		select * from vip_consume 
+  		where vip_id=#{vipid}
+  		order by consume_time desc
+  		
+  	</select>
+  	
+  	<resultMap type="VipConsumeEntity" id="vipConsumeMap">
+  		<id column="id" property="id"/>
+  		<association property="vip" 
+  		column="vip_id" 
+  		fetchType="lazy"
+  		select="com.vip.dao.VipDetailDao.selectById" >
+  		</association>
+  		
+  		<association property="createUser" 
+  		column="create_User_id" 
+  		fetchType="lazy"
+  		select="com.vip.dao.SysUserDao.selectById" >
+  		</association>
+  		
+  		
+  	</resultMap>
+</mapper>

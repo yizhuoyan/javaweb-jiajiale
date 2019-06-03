@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.dao.SysUserDao">
+  	<insert id="insert">
+  		insert into sys_user(
+  		id,account,name,password,avator,
+  		time_create,time_last_alter_password,
+  		time_last_login,remark,last_login_ip,status
+  		)values(
+  		#{id},#{account},#{name},#{password},#{avator},
+  		#{timeCreate},#{timeLastAlterPassword},#{timeLastLogin},
+  		#{remark},#{lastLoginIp},#{status}
+  		)
+  	</insert>
+  	
+  	<update id="update">
+  	update sys_user
+  	<set>
+      <if test="e.account != null">account=#{e.account},</if>
+      <if test="e.name != null">name=#{e.name},</if>
+      <if test="e.password != null">password=#{e.password},</if>
+      <if test="e.avator != null">avator=#{e.avator},</if>
+      <if test="e.timeLastLogin != null">last_login_time=#{e.timeLastLogin}</if>
+      <if test="e.lastLoginIp != null">last_Login_Ip=#{e.lastLoginIp}</if>
+      <if test="e.timeLastAlterPassword != null">time_Last_Alter_Password=#{e.timeLastAlterPassword}</if>
+      <if test="e.status != null">status=#{e.status}</if>
+    </set>
+ 	 where id=#{id}
+  	</update>
+  	
+  	
+  	<select id="select" resultMap="UserMap">
+  		select * from sys_user where 
+  		${column}=#{value}
+  	</select>
+  	<select id="selectById" resultMap="UserMap">
+  		select * from sys_user where 
+  		id=#{id}
+  	</select>
+  	
+  	<delete id="delete">
+  		delete from sys_user where 
+  		id=#{value}
+  	</delete>
+  	
+  	<resultMap type="SysUserEntity" id="UserMap">
+  		<id column="id" property="id"/>
+  	</resultMap>
+</mapper>

@@ -1,0 +1,154 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>主页</title>
+    <style>
+        menu, h1, ul {
+            margin: 0;
+        }
+
+        html, body {
+            margin: 0;
+            height: 100%;
+            font-size: 14px;
+        }
+
+        article> header {
+            line-height: 80px;
+            text-align: center;
+            background: #999;
+            height: 80px;
+        }
+
+        article > header > h1 {
+            display: inline;
+            text-align: center;
+        }
+
+        .body {
+            position: absolute;
+            top: 80px;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .body > menu {
+            position: absolute;
+            left: 0;
+            width: 200px;
+            height: 100%;
+            background: #eee;
+            box-sizing: border-box;
+            padding: 0;
+        }
+
+        .body > main {
+            margin-left: 200px;
+            height: 100%;
+        }
+
+        main > iframe {
+            height: 100%;
+            width: 100%;
+            border: 0;
+            display: block;
+
+        }
+        .menu{
+            list-style: none;
+            padding: 0;
+        }
+        .menu>li{
+
+            text-align: center;
+        }
+        .menu>li>a{
+            padding: 10px 0;
+            display: block;
+            border-bottom: 1px solid #0e90d2;
+            text-decoration: none;
+        }
+        .menu>li>a:hover{
+            background: #2a85a0;
+        }
+    </style>
+
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/yi.toast.js"></script>
+
+</head>
+<body>
+<article>
+    <header>
+        <h1>佳佳乐VIP消费查询系统</h1>
+        <span>
+    		<b id="userNameEL">{{currentUser.name}}</b>
+    		<a href="javascript:" @click.prevent="logout">退出登录</a>
+    	</span>
+    </header>
+    <section class="body">
+        <menu>
+            <ul class="menu">
+                <li>
+                    <a href="/vip/load.html" target="mainFrame">VIP客户查询</a>
+                </li>
+                <li>
+                    <a href="/vip/manage/add.html" target="mainFrame">录入VIP客户</a>
+                </li>
+                <li>
+                    <a href="/vip/manage/list.html" target="mainFrame">VIP客户管理</a>
+                </li>
+                <li>
+                    <a href="/vip-consume/load.html" target="mainFrame">查看VIP消费记录</a>
+                </li>
+                <li>
+                    <a href="/vip-consume/add.html" target="mainFrame">录入VIP消费记录</a>
+                </li>
+                <li>
+                    <a href="/vip-consume/list.html" target="mainFrame">VIP消费记录管理</a>
+                </li>
+                <li>
+                    <a href="/update-password.html" target="mainFrame">修改密码</a>
+                </li>
+            </ul>
+        </menu>
+        <main>
+            <iframe name="mainFrame" src="welcome.html"></iframe>
+        </main>
+    </section>
+
+</article>
+
+<script>
+    const app = new Vue({
+        el: "body>article",
+        data: {
+            currentUser: null
+        },
+        created: function () {
+            const currentUser = sessionStorage.getItem("currentUser");
+            if (!currentUser) {
+                location.href = "/login.html";
+                return;
+            }
+
+            this.currentUser = JSON.parse(currentUser);
+        },
+        methods: {
+            "logout": function () {
+                const uid=this.currentUser.id;
+                axios.delete(`/api/session/${uid}`).then(r => {
+                    location.href = "/login.html";
+                });
+
+            }
+        }
+
+    });
+
+
+</script>
+</body>
+</html>
