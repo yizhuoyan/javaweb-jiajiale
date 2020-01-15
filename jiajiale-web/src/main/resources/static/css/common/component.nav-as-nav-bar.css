@@ -1,0 +1,29 @@
+nav{
+     background-color: #336699;
+    color: #efefef;
+     border-bottom: 1px solid #eee;
+     padding: 5px 15px;
+     box-sizing:border-box;
+     font-size: 100%;
+     display: flex;
+     flex-flow: row nowrap;
+     justify-content: flex-start;
+     align-items: center;
+}
+nav>.grow{
+	flex: auto;
+}
+nav > a.fa-back {
+    text-decoration: none;
+}
+
+nav > a.fa-back:hover {
+    color: #c42818;
+}
+
+nav > a.fa-back:after {
+    content: "┆";
+    
+    padding: 0 5px;
+    color: #999999;
+}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>VIP客户管理</title>
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+<nav>
+    <ul class="breadcrumb">
+        <li><a href="/welcome/view.html">首页</a></li>
+        <li>VIP客户管理</li>
+    </ul>
+</nav>
+<menu>
+    <a class="btn" href="../add/view.html">新增</a>
+</menu>
+
+<article>
+    <form class="inline" @submit.prevent="query">
+
+        <p>
+            <label>
+                VIP等级：
+                <select v-model="params.rankId" style="width: auto">
+                    <option value="" >--任意--</option>
+                    <option v-for="r in vipRankList" :value="r.id">
+                        {{r.name}}
+                    </option>
+                </select>
+            </label>
+            <label>
+                手机号或姓名：
+                <input size="30" maxlength="15" type="text" v-model="params.key">
+            </label>
+            <button style="line-height:1.7em">查询</button>
+        </p>
+
+    </form>
+
+    <main>
+
+        <table class="data">
+            <thead>
+            <tr>
+                <th width="40px">序号</th>
+                <th width="80px">操作</th>
+                <th width="150px">编号(手机号)</th>
+                <th>姓名</th>
+                <th width="80px">VIP等级</th>
+                <th>创建人</th>
+            </tr>
+            </thead>
+            <tbody v-if="resp===null">
+            <tr>
+                <td colspan="99">加载中...</td>
+            </tr>
+            </tbody>
+            <tbody v-else-if="resp.code!=='ok'">
+            <tr>
+                <td colspan="99">{{resp.message}}</td>
+            </tr>
+            </tbody>
+            <tbody v-else>
+            <template v-if="resp.data.totalRows>0">
+                <tr v-for="(row,i) in resp.data.rows">
+                    <td>{{i+1}}</td>
+                    <td><a :href="'../check/view.html#'+row.id">查看/修改</a></td>
+                    <td>{{row.account}}</td>
+                    <td>{{row.name}}</td>
+                    <td>{{row.rankName}}</td>
+                    <td>{{row.createUserName}}</td>
+                </tr>
+            </template>
+            <tr v-else>
+                <td colspan="99">很抱歉，未找到相关数据</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <section v-if="resp!=null&&resp.data.totalRows>0" class="pad layout-hbox-between">
+            <div>
+                共<b>{{resp.data.totalRows}}</b>条记录 每页<b>{{resp.data.pageSize}}</b>条
+                共<b>{{resp.data.totalPages}}</b>页
+            </div>
+            <div>
+                <button @click="params.pageNo-=1">上一页</button>
+                 <b>{{resp.data.pageNo}}</b>
+                <button @click="params.pageNo+=1">下一页</button>
+            </div>
+        </section>
+    </main>
+</article>
+<script src="/js/jquery.js"></script>
+<script
+        src="/js/yi.toast.js"></script>
+<script src="/js/vue.js"></script>
+<script>
+    //网页加载完毕获取等级列表
+    const app = new Vue({
+        el: "body>article",//css选择器
+        data: {
+            vipRankList:[],//vip 等级
+            resp: null,//应答对象
+            params:{
+                pageNo: 1,//输入页面
+                pageSize: 5,// 输入每页大小
+                rankId:"",//等级id
+                key: null//输入的查询关键字
+            }
+
+        },
+        watch: {
+            //当页码变化时
+            "params.pageNo": function (newV, oldV) {
+                this.query();
+            },
+        },
+        methods: {
+            //后台查询
+            query: function (evt) {
+                if (this.resp != null) {
+                    if (this.resp.code === "ok") {
+                        if (this.resp.data.totalRows > 0) {
+                            if (this.pageNo < 1) {
+                                return;
+                            }
+                            if (this.pageNo > this.resp.data.totalPages) {
+                                return;
+                            }
+                        }
+                    }
+                }
+                $.getJSON("/api/vip",this.params, function (resp) {
+                    if (resp.code !== "ok") {
+                        toast("系统繁忙，请稍后再试");
+                        return;
+                    }
+                    app.resp = resp;
+                })
+            },
+            loadVipRankList:function () {
+                $.getJSON("/api/rank", function (resp) {
+                    if (resp.code !== "ok") {
+                        toast("加载等级列表失败，请联系管理员");
+                        return;
+                    }
+                    app.vipRankList = resp.data;
+                });
+            }
+        },
+        //当vue对象被创建时
+        created: function () {
+            //查询vip等级
+            this.loadVipRankList();
+            //进行一次查询
+            this.query();
+        }
+    });
+</script>
+</body>
+</html>

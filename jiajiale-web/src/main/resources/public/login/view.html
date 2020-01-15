@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+   		<meta charset="UTF-8">
+        <title>登录</title>
+        <link rel="shortcut icon" href="/favicon.ico">
+        <link rel="stylesheet" href="/css/common.css">
+        <style>
+            body>article{
+                height: 100vh;
+                text-align: center;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <article class="layout-vbox">
+            <header>
+                <img src="/img/logo.200x200.png" width="200" height="200" alt="Logo">
+                <h2>佳佳乐商城VIP消费{{nowYear}}查询系统</h2>
+            </header>
+
+            <main class="grow">
+                <form @submit.prevent="login">
+            	  <p>
+                    <label for="accountEL">&ensp;Account：</label>
+                  	<input id="accountEL" size="32" v-model="formdata.account" type="text" placeholder="用户名">
+                  </p>
+
+                  <p>
+                      <label for="passwordEL">Password：</label>
+                      <input id="passwordEL" size="32"  v-model="formdata.password" type="password" placeholder="密码">
+                  </p>
+                  <p class="align-center">
+                  	    <button  class="D3" >&emsp;登&emsp;录&emsp;</button>
+                  	    <a style="margin-left: 2em" href="/forget-password/view.html">忘记密码?</a>
+                  </p>
+                </form>
+            </main>
+
+            <footer >
+               <p>
+               		&copy;2008-{{nowYear}}
+               		<a href="mailto:yizhuoyan@hotmail.com">yizhuoyan@hotmail.com</a> 版权所有。 All rights reserved.
+               </p>
+            </footer>
+        </article>
+
+        <script src="/js/axios.min.js"></script>
+        <script src="/js/vue.js"></script>
+        <script src="/js/yi.toast.js"></script>
+		<script>
+
+			const app=new Vue({
+				el:"body>article",
+				data:{
+					nowYear:new Date().getFullYear(),
+					formdata:{
+						account:null,
+						password:null,
+						captchaCode:null
+					}
+
+				},
+				methods:{
+					login:function(){
+
+						axios.post("/api/session",this.formdata)
+                            .then(function(resp){
+							if(resp.code!=="ok"){
+								toast(resp.message);
+								return;
+							}
+							toast("登录成功");
+                            setTimeout(function () {
+                                window.location.href="/";
+                            },1000);
+						});
+
+
+					}
+				}
+			});
+
+		</script>
+    </body>
+</html>

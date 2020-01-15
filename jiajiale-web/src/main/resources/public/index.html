@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/js/axios.min.js"></script>
+    <script>
+        axios.get("/api/session")
+            .then(function (currentUser) {
+                sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
+                sessionStorage.setItem("token", currentUser.token);
+                let role = currentUser.role;
+                if (!role) {
+                    role = "vip";
+                }
+                location.href="/"+role+"/index/view.html";
+            })
+            .catch(function (err) {
+                console.log(err);
+                location.href="/login/view.html";
+            });
+    </script>
+</head>
+<body>
+
+</body>
+</html>

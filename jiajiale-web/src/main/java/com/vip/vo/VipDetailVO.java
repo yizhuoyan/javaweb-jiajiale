@@ -1,8 +1,6 @@
 package com.vip.vo;
 
-import com.vip.entity.SysUserEntity;
 import com.vip.entity.VipDetailEntity;
-import com.vip.entity.VipRankEntity;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,7 +10,7 @@ import java.time.LocalDateTime;
 public class VipDetailVO {
     private String id;
     /**vip账号(目前客户手机号)*/
-    private String account;
+    private String no;
 
     /**手机号，可作为会员凭证*/
     private String mobile;
@@ -21,7 +19,7 @@ public class VipDetailVO {
     private String name;
 
     /**性别*/
-    private Boolean sex;
+    private Integer sex;
 
     /**生日*/
     private LocalDate birthday;
@@ -40,8 +38,8 @@ public class VipDetailVO {
 
     /**等级*/
     private String rankName;
-    /*冗余*/
-    private String rankId;
+
+    private Integer rankId;
 
     /**总优惠金额*/
     private Integer totalDiscountMoney;
@@ -76,20 +74,19 @@ public class VipDetailVO {
         }
         vo.setLastConsumeTime(e.getLastConsumeTime());
         vo.setId(e.getId());
-        vo.setAccount(e.getAccount());
+        vo.setNo(e.getNo());
         vo.setMobile(e.getMobile());
-        vo.setSex(e.getSex());
+        vo.setSex(e.getSex()?1:0);
         vo.setBirthday(e.getBirthday());
         vo.setQq(e.getQq());
         vo.setEmail(e.getEmail());
         vo.setZipCode(e.getZipCode());
-        if(vo.getRankName()!=null) {
+        if(e.getRank()!=null) {
             vo.setRankName(e.getRank().getName());
-            vo.setRankId(e.getRankId());
+            vo.setRankId(e.getRank().getId());
         }
         vo.setRemark(e.getRemark());
-
         vo.setCreateTime(e.getCreateTime());
-        return null;
+        return vo;
     }
 }

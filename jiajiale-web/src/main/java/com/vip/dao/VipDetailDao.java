@@ -5,9 +5,8 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.vip.entity.VipDetailEntity;
-import com.vip.entity.VipRankEntity;
 
-public interface VipDetailDao extends TemplateDao<VipDetailEntity> {
+public interface VipDetailDao extends CRUDDao<VipDetailEntity,String> {
 
-	List<VipDetailEntity> selectByKey(@Param("key") String key);
+	List<VipDetailEntity> selectByRankIdAndKey(@Param("rankId") Integer rankId,@Param("key") String key);
 }

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>查看/修改VIP客户信息</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+        form>div>p{
+            width: 25em;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <ul class="breadcrumb">
+        <li><a href="/welcome/view.html">首页</a></li>
+        <li><a href="../list/view.html">VIP客户管理</a></li>
+        <li>查看/修改VIP客户信息</li>
+    </ul>
+</nav>
+
+<menu>
+    <button form="modForm">确定</button>
+    <a class="btn" href="../list/view.html">返回</a>
+</menu>
+<main>
+    <form id="modForm" @submit.prevent="modify" class="label8em">
+            <div>
+                <p>
+                    <label for="mobileEL">*手机号：</label>
+                    <input id="mobileEL"
+                           v-model="params.mobile"  placeholder="将作为VIP编号" type="text">
+                </p>
+
+                <p>
+                    <label for="rankSelect">*会员等级：</label>
+                    <select id="rankSelect"  v-model="params.rankId">
+                        <option value="">---请选择---</option>
+                        <option v-for="r in vipRankList" :value="r.id">
+                            {{r.name}}
+                        </option>
+                    </select>
+                </p>
+            </div>
+            <div>
+                <p>
+                    <label for="nameEL">*姓名：</label>
+                    <input id="nameEL" v-model="params.name" type="text">
+                </p>
+                <p>
+                    <label for="maleEL">*性别：</label>
+                    <span>
+                    <label>
+                        <input  id="maleEL" v-model="params.sex" type="radio" value="1">男
+                    </label>
+                    <label>
+                        <input  v-model="params.sex" type="radio" value="0">女
+                    </label>
+                </span>
+                </p>
+            </div>
+            <div>
+                <p>
+                    <label for="birthdayEL">生日：</label>
+                    <input id="birthdayEL" v-model="params.birthday" type="date">
+                </p>
+                <p>
+                    <label for="qqEL">QQ：</label>
+                    <input id="qqEL" v-model="params.qq" type="text">
+                </p>
+            </div>
+            <div>
+                <p>
+                    <label for="emailEL">Email：</label>
+                    <input id="emailEL" v-model="params.email" type="text">
+                </p>
+                <p>
+                    <label for="zipCodeEL">邮编：</label>
+                    <input id="zipCodeEL" v-model="params.zipCode" type="text">
+                </p>
+            </div>
+            <p>
+                <label for="addressEL">账单邮寄地址：</label>
+                <input class="grow" id="addressEL" v-model="params.address" type="text">
+            </p>
+            <p>
+                <label class="align-top" for="remarkEL">备注：</label>
+                <textarea class="grow" id="remarkEL" v-model="params.remark"></textarea>
+            </p>
+    </form>
+
+
+</main>
+
+<script src="/js/vue.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script src="/js/axios.min.js"></script>
+
+<script>
+    const id=location.hash.substr(1);
+    const app = new Vue({
+        el: "main",
+        data: {
+            vipRankList:[{id:"",name:"加载中..."}],
+            params: {
+                mobile:"123",
+                rankId:"",
+
+            }
+        },
+        methods: {
+            modify: function () {
+                axios.put("/api/vip/"+id, this.params).then(function (resp) {
+                    if (resp.code !== "ok") {
+                        toast(resp.message);
+                    } else {
+                        toast("修改成功，请返回!");
+                    }
+                });
+            },
+            loadVip:function(){
+                axios.get('/api/vip/'+id).then(function (resp) {
+                    if (resp.code !== "ok") {
+                        toast(resp.message);
+                    } else {
+                        console.log(resp);
+                        app.params = resp.data;
+                    }
+                });
+            },
+            loadVipRankList:function () {
+                axios.get("/api/rank").then(function (resp) {
+                    if (resp.code !== "ok") {
+                        toast("加载等级列表失败，请联系管理员");
+                        return;
+                    }
+                    app.vipRankList = resp.data;
+                });
+            }
+        },
+        created: function () {
+            this.loadVipRankList();
+            this.loadVip();
+        }
+    });
+
+</script>
+</body>
+</html>

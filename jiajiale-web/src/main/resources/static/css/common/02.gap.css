@@ -1,0 +1,36 @@
+.gap{
+    margin: 1em;
+}
+.gap-h{
+    margin-left: 1em;
+    margin-right: 1em;
+}
+.gap-v{
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.gap-left{
+    margin-left: 1em;
+}
+.gap-right{
+    margin-right: 1em;
+}
+
+.gap2{
+    margin: 2em;
+}
+.gap2-h{
+    margin-left: 2em;
+    margin-right: 2em;
+}
+.gap2-v{
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+.gap2-left{
+    margin-left: 2em;
+}
+.gap2-right{
+    margin-right: 2em;
+}

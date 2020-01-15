@@ -1,0 +1,108 @@
+form {
+	margin: 0;
+	padding-left:15px;
+	padding-right:15px;
+    display: inline-flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+}
+
+form.inline{
+
+    justify-content: flex-start;
+    flex-flow: row wrap;
+    align-items: stretch;
+}
+
+form>div{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 0em;
+}
+
+/*form下的p表示一个标注+控件区域*/
+form p{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 1em;
+    margin-right: 1em;
+    flex: auto;
+}
+form p.align-center{
+    justify-content: center;
+}
+form p.align-left{
+    justify-content: flex-start;
+}
+form p.align-right{
+    justify-content: flex-end;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="number"],
+form input[type="datetime-local"],
+form input[type="date"],
+form input[type="email"],
+form input[type="url"],
+form input[type="tel"],
+form select,
+form textarea
+{
+    flex:auto;
+}
+form p>label[for] {
+    text-align: right;
+}
+form.label5em p>label[for] {
+    width: 4em;
+}
+
+form.label5em p>label[for] {
+	width: 5em;
+}
+
+form.label6em  p>label[for] {
+	min-width: 6em;
+}
+
+form.label7em  p>label[for] {
+	min-width: 7em;
+}
+
+form.label8em  p>label[for] {
+	width: 8em;
+}
+form.label9em  p>label[for] {
+    min-width: 9em;
+}
+form.label10em p>label[for] {
+    min-width: 10em;
+}
+form.label12em p>label[for] {
+    min-width: 12em;
+}
+
+form em {
+	color: #7f7f7f;
+	padding-left: 1em;
+	font-style: normal;
+}
+
+form p>.align-top
+{
+    align-self: flex-start;
+}
+form p>.align-bottom{
+    align-self: flex-end;
+}
+form p>.align-middle{
+    align-self: center;
+}
+
+

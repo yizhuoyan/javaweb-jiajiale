@@ -1,0 +1,18 @@
+a {
+    cursor: pointer;
+    background-color: transparent;
+}
+
+a[href]:hover {
+    text-decoration: none;
+}
+
+a:active{
+	color: inherit;
+}
+a:visited{
+	color: inherit;
+}
+a:link{
+    color: inherit;
+}

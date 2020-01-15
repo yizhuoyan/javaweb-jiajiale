@@ -58,8 +58,11 @@
   		id=#{id}
   	</select>
   	
-  	<select id="selectByKey" resultMap="vipDetailMap">
+  	<select id="selectByRankIdAndKey" resultMap="vipDetailMap">
   		select * from vip_detail where 1=1
+  		<if test="rankId!=null">
+            and rank_id=#{rankId}
+        </if>
   		<if test="key!=null">
   			and (account like #{key}
   			or name like #{key}
@@ -72,13 +75,15 @@
   	<select id="selectAll" resultMap="vipDetailMap">
   		select * from vip_detail 
   		<if test="orderByColumn!=null">
-  			order ${orderByColumn};
+  			order by ${orderByColumn};
   		</if>
   	</select>
-  	
-  	<resultMap type="VipDetailEntity" id="vipDetailMap">
+
+    <resultMap type="VipDetailEntity" id="vipDetailMap">
   		<id column="id" property="id"/>
-  		<association property="rank" 
+        <result column="rank_id" property="rankId"/>
+        <result column="create_User_id" property="createUserId"/>
+  		<association property="rank"
   		column="rank_id" 
   		fetchType="eager"
   		select="com.vip.dao.VipRankDao.selectById" >
@@ -86,7 +91,7 @@
   		<association property="createUser" 
   		column="create_User_id" 
   		fetchType="lazy"
-  		select="com.vip.dao.SysUserDao.selectById" >
+  		select="com.vip.dao.SysAccountDao.selectById" >
   		</association>
   	</resultMap>
 </mapper>

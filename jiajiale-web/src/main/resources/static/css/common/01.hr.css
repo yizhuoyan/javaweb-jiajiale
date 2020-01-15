@@ -1,0 +1,17 @@
+hr {
+    margin-top: 1em;
+    margin-bottom: 1em;
+    border: 0;
+    border-top: 1px solid #eee;
+    box-sizing: content-box;
+    height: 0;
+    overflow: visible;
+}
+
+hr.long {
+    margin: 1em 6em
+}
+
+hr.auto {
+    margin: 0;
+}

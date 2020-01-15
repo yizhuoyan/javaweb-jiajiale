@@ -1,11 +1,6 @@
 package com.vip.vo;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import com.vip.entity.SysUserEntity;
 import com.vip.entity.VipDetailEntity;
-import com.vip.entity.VipRankEntity;
 
 import lombok.Data;
 
@@ -13,7 +8,7 @@ import lombok.Data;
 public class VipListVO {
 	private String id;
 	/** vip账号(目前客户手机号) */
-	private String account;
+	private String no;
 	/** 手机号，可作为会员凭证 */
 	private String mobile;
 
@@ -31,7 +26,7 @@ public class VipListVO {
 		VipListVO vo = new VipListVO();
 		vo.setName(e.getName());
 		vo.setId(e.getId());
-		vo.setAccount(e.getAccount());
+		vo.setNo(e.getNo());
 		vo.setMobile(e.getMobile());
 		vo.setSex(e.getSex());
 		if(e.getRank()!=null) {

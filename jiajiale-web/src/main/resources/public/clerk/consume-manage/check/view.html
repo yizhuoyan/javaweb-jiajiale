@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>查看客户消费记录</title>
+    <link href="/css/common.css"
+          rel="stylesheet">
+    <style>
+        form  p {
+            min-width: 30vw;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <ul class="breadcrumb">
+        <li>
+            <a href="../list/view.html">VIP客户消费记录</a>
+        </li>
+        <li>查看客户消费记录</li>
+    </ul>
+</nav>
+<menu>
+    <a class="btn"
+       href="../list/view.html">返回
+    </a>
+</menu>
+<main>
+    <form class="label8em">
+            <div>
+            <p>
+                <label for="mobileEL">手机号：</label>
+                <input id="mobileEL"
+                       readonly
+                       type="text"
+                       v-model="e.mobile">
+            </p>
+            <p>
+                <label for="vipNameEL">姓名：</label>
+                <input id="vipNameEL"
+                       readonly
+                       type="text"
+                       v-model="e.vipName">
+            </p>
+            <p>
+                <label for="rankNameEL">
+                    会员等级：
+                </label>
+                <input id="rankNameEL"
+                       readonly
+                       type="text"
+                       v-model="e.rankName">
+            </p>
+            <p>
+                <label for="orderIdEL">
+                    关联订单：
+                </label>
+                <input id="orderIdEL"
+                       readonly
+                       type="text"
+                       v-model="e.orderId">
+            </p>
+            <p>
+                <label for="consumeMoneyEL">
+                    消费金额(元)：
+                </label>
+                <input id="consumeMoneyEL"
+                       readonly
+                       type="text"
+                       v-model="e.consumeMoney">
+            </p>
+            <p>
+                <label for="consumeTimeEL">
+                    消费时间：
+                </label>
+                <input id="consumeTimeEL"
+                       readonly
+                       type="text"
+                       v-model="e.consumeTime">
+            </p>
+            <p>
+                <label for="enjoyDiscountEL">
+                    享受折扣：
+                </label>
+                <input id="enjoyDiscountEL"
+                       readonly
+                       type="text"
+                       v-model="e.enjoyDiscount">
+            </p>
+            <p>
+                <label for="actualPayMoneyEL">
+                    实际付款(元)：
+                </label>
+                <input id="actualPayMoneyEL"
+                       readonly
+                       type="text"
+                       v-model="e.actualPayMoney">
+            </p>
+            <p>
+                <label for="discountMoneyEL">
+                    优惠金额(元)：
+                </label>
+                <input id="discountMoneyEL"
+                       readonly
+                       type="text"
+                       v-model="e.discountMoney">
+            </p>
+            <p>
+                <label for="createUserNameEL">
+                    录入人：
+                </label>
+                <input id="createUserNameEL"
+                       readonly
+                       type="text"
+                       v-model="e.createUserName">
+            </p>
+            <p>
+                <label for="createTimeEL">
+                    录入时间：
+                </label>
+                <input id="createTimeEL"
+                       readonly
+                       type="text"
+                       v-model="e.createTime">
+            </p>
+            </div>
+                <p>
+                    <label for="remarkEL">
+                        备注：
+                    </label>
+                    <textarea id="remarkEL"
+                              readonly
+                              v-model="e.remark">
+                    </textarea>
+                </p>
+    </form>
+</main>
+
+
+<script
+        src="/js/yi.toast.js"></script>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+
+<script>
+    const id = location.hash.substr(1);
+    const app = new Vue({
+        el: "main",
+        data: {
+            e: {}
+        },
+        methods: {
+            remove: function () {
+                axios.delete('/api/vipconsume/' + id)
+                    .then(resp => {
+                        if (resp.code !== "ok") {
+                            toast(resp.message);
+                        } else {
+                            toast("删除成功");
+                            setTimeout(function () {
+                                window.location.href = "../list/view.html";
+                            }, 500);
+
+                        }
+                    });
+
+            }
+        },
+        created: function () {
+            axios.get('/api/vipconsume/' + id).then(resp => {
+                if (resp.code !== "ok") {
+                    toast(resp.message);
+                } else {
+                    //console.log(resp);
+                    app.e = resp.data;
+                }
+            });
+
+        }
+    });
+
+</script>
+</body>
+</html>

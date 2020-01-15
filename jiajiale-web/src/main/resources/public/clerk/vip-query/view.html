@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>VIP客户信息查询</title>
+    <link href="/css/common.css"
+          rel="stylesheet">
+    <style>
+        form>div>p{
+            min-width: 30vw;
+        }
+    </style>
+</head>
+<body>
+<article>
+    <section class="text-center">
+        <form class="inline">
+            <p class="pad">
+                <label>
+                    VIP(手机号):
+                    <input autofocus
+                           maxlength="11"
+                           name="mobile"
+                           type="tel"
+                           value="13888888888">
+                </label>
+                <button id="submitBtn"
+                        type="submit">Go
+                </button>
+            </p>
+        </form>
+    </section>
+    <main class="pad">
+        <section v-if="loadStatus==='loading'">
+            查询中，请稍后
+        </section>
+        <section v-else-if="loadStatus==='noResult'">
+            没有VIP(
+            <b id="mobileInput"></b>
+            )信息，请检查一下手机号是否正确。
+        </section>
+
+        <section v-else-if="loadStatus==='hasResult'">
+            <div class="layout-hcell-between pad">
+                <span>
+                    <b>最近5笔消费</b>
+                </span>
+                <span>
+                    <a class="btn" href="/clerk/add-vip-consume/view.html">添加新的消费记录</a>
+                </span>
+            </div>
+            <table class="data">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>消费时间</th>
+                    <th>消费商品</th>
+                    <th>关联订单</th>
+                    <th>消费金额</th>
+                    <th>创建人</th>
+                </tr>
+                </thead>
+                <tbody v-if="recentConsumeList!=null">
+                    <tr v-for="r,i in recentConsumeList">
+                        <td>{{i+1}}</td>
+                        <td>{{i+1}}</td>
+                        <td>{{i+1}}</td>
+                        <td>{{i+1}}</td>
+                        <td>{{i+1}}</td>
+                        <td>{{i+1}}</td>
+                    </tr>
+                </tbody>
+                <tbody v-else>
+                    <tr>
+                        <td colspan="9">近期暂无消费记录</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="layout-hcell" style="margin-top: 1em">
+                <div class="grow pad-right">
+                    <hr>
+                </div>
+                <b>VIP客户详情</b>
+                <div class="grow pad-left">
+                    <hr>
+                </div>
+            </div>
+            <form class="label7em">
+            <div>
+                <p>
+                    <label for="mobileEL">手机号：</label>
+                    <input id="mobileEL" type="text" disabled>
+                </p>
+                <p>
+                    <label for="nameEL">姓名：</label>
+                    <input id="nameEL" type="text">
+                </p>
+                <p>
+                    <label for="sexEL"> 性别：</label>
+                    <select id="sexEL" v-model="params.sex">
+                        <option value="1">男</option>
+                        <option value="0">女</option>
+                    </select>
+                </p>
+            </div>
+            <div>
+                <p>
+                    <label for="qqEL">QQ：</label>
+                    <input id="qqEL" name="qq" type="text">
+                </p>
+                <p>
+                    <label for="emailEL">Email：</label>
+                    <input id="emailEL" name="email" type="text">
+                </p>
+                <p>
+                    <label for="zipCodeEL">邮编：</label>
+                    <input id="zipCodeEL" name="zipCode" type="text">
+                </p>
+            </div>
+            <p>
+                <label for="addressEL">账单邮寄地址：</label>
+                <input class="grow" id="addressEL" name="address" type="text">
+            </p>
+            <div>
+                <p>
+                    <label for="rankEL">VIP等级：</label>
+                    <input id="rankEL" type="text" disabled>
+                </p>
+                <p>
+                    <label for="totalConsumeMoneyEL">总消费金额：</label>
+                    <input id="totalConsumeMoneyEL" type="text" disabled>
+                </p>
+                <p>
+                    <label for="totalDiscountMoneyEL">总折扣金额：</label>
+                    <input id="totalDiscountMoneyEL" type="text" disabled>
+                </p>
+            </div>
+            <p>
+                <label class="align-top" for="remarkEL">备注：</label>
+                <textarea class="grow" id="remarkEL" name="remark"></textarea>
+            </p>
+             <div class="layout-hcenter">
+                 <button>立即更新</button>
+             </div>
+            </form>
+        </section>
+    </main>
+</article>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script>
+    const app=new Vue({
+        el:"body>article",
+        data:{
+            params:{},
+            loadStatus:"hasResult",
+            recentConsumeList:null,
+            loadedVip:{}
+        },
+        methods:{
+            loadVip:function () {
+                let mobile=this.params.mobile;
+                if (mobile.length === 0) {
+                    toast("VIP手机号码必须输入");
+                    return;
+                }
+                if (mobile.length < 11) {
+                    toast("VIP手机号码不是合法的手机号");
+                    return;
+                }
+                this.loadStatus="loading";
+                axios.get("/api/vip/"+mobile).then(function (vip) {
+                    app.loadedVip=vip;
+                    app.loadStatus="hasResult";
+                }).catch(function () {
+                    app.loadStatus="noResult";
+                });
+            }
+        }
+    });
+
+
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>新增VIP客户</title>
+    <link href="/css/common.css" rel="stylesheet">
+    <style>
+        form>div>p {
+            min-width: 30vw;
+        }
+    </style>
+</head>
+<body>
+<menu>
+    <button form="formEL" type="submit">确定</button>
+</menu>
+<main>
+    <form class="label8em" id="formEL">
+        <div>
+            <p>
+                <label for="mbileEL">*手机号：</label>
+                <input id="mbileEL" name="mobile" placeholder="将作为VIP编号" type="text">
+            </p>
+            <p>
+                <label for="nameEL">*姓名：</label>
+                <input id="nameEL" name="name" type="text">
+            </p>
+            <p>
+                <label for="rankSelect">*会员等级：</label>
+                <select id="rankSelect" name="rankId">
+                </select>
+            </p>
+        </div>
+        <div>
+
+            <p>
+                <label for="maleEL">*性别：</label>
+                <span>
+                    <label>
+                        <input checked id="maleEL" name="sex" type="radio" value="1">男
+                    </label>
+                    <label>
+                        <input name="sex" type="radio" value="0">女
+                    </label>
+                </span>
+            </p>
+            <p>
+                <label for="birthdayEL">生日：</label>
+                <input id="birthdayEL" name="birthday" type="date">
+            </p>
+            <p>
+                <label for="qqEL">QQ：</label>
+                <input id="qqEL" name="qq" type="text">
+            </p>
+        </div>
+        <div>
+            <p>
+                <label for="emailEL">Email：</label>
+                <input id="emailEL" name="email" type="text">
+            </p>
+            <p>
+                <label for="zipCodeEL">邮编：</label>
+                <input id="zipCodeEL" name="zipCode" type="text">
+            </p>
+        </div>
+            <p>
+                <label for="addressEL">账单邮寄地址：</label>
+                <input class="grow" id="addressEL" name="address" type="text">
+            </p>
+            <p>
+                <label class="align-top" for="remarkEL">备注：</label>
+                <textarea class="grow" id="remarkEL" name="remark"></textarea>
+            </p>
+    </form>
+</main>
+<script src="/js/jquery.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script>
+    //网页加载完毕获取等级列表
+    $(function () {
+        $.getJSON("/api/rank", function (resp) {
+            if (resp.code !== "ok") {
+                toast("加载等级列表失败，请联系管理员");
+                return;
+            }
+            let list = resp.data;
+            /**
+             [{id:1,name:'普通会员'},{id:2,name:'黄金会员'}...]
+             */
+            paintRankSelect(list);
+        })
+    });
+    const paintRankSelect = function (list) {
+        let select = $("#rankSelect");
+        for (let rank of list) {
+            $("<option/>")
+                .attr("value", rank.id)
+                .text(rank.name).appendTo(select);
+        }
+    };
+    const paintRankSelect1 = function (list) {
+        let select = document.getElementById("rankSelect");
+        for (let rank of list) {
+            let rankOption = document.createElement("option");
+            rankOption.id = rank.id;
+            rankOption.textContent = rank.name;
+            select.appendChild(rankOption);
+
+        }
+    };
+    $("form").submit(function (evt) {
+        $("#submitBtn").prop("disabled", true);
+        evt.preventDefault();
+
+        $.post("/api/vip", $(this).serialize(), function (resp) {
+            if (resp.code !== "ok") {
+                toast(resp.message);
+                return;
+            }
+            alert("成功!");
+
+        }).always(function () {
+            $("#submitBtn").prop("disabled", false);
+        });
+
+    });
+</script>
+</body>
+</html>

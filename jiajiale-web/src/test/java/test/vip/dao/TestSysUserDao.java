@@ -1,7 +1,7 @@
 package test.vip.dao;
 
-import com.vip.dao.SysUserDao;
-import com.vip.entity.SysUserEntity;
+import com.vip.dao.SysAccountDao;
+import com.vip.entity.SysAccountEntity;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,29 +14,29 @@ import java.util.Map;
 
 public class TestSysUserDao extends AbstractSpringTest {
 	@Autowired
-	SysUserDao dao;
+	SysAccountDao dao;
 	
 	@Test
 	public void test00Insert() throws Exception{
-		SysUserEntity e = new SysUserEntity();
+		SysAccountEntity e = new SysAccountEntity();
 		e.setName("name");
 		e.setId("id");
 		e.setAccount("account");
 		e.setPassword("password");
 		e.setAvatar("avator");
-		e.setTimeCreate(LocalDateTime.now());
-		e.setTimeLastLogin(LocalDateTime.now());
+		e.setCreateTime(LocalDateTime.now());
+		e.setLastLoginTime(LocalDateTime.now());
 		e.setRemark("remark");
 		e.setLastLoginIp("lastLoginIp");
 		e.setStatus(0);
-		e.setTimeLastAlterPassword(LocalDateTime.now());
+		e.setLastModifyPasswordTime(LocalDateTime.now());
 		dao.insert(e);
 		
 	}
 	
 	@Test
 	public void test55Select() throws Exception{
-		SysUserEntity e=dao.select("id", "id");
+		SysAccountEntity e=dao.select("id", "id");
 
 		Assert.assertNotNull("不能为空" ,e);
 	}

@@ -11,7 +11,6 @@ import lombok.Data;
 @Data
 public class VipRankEntity{
 	
-	
 		/**等级代号*/
 		private int id;		
 	

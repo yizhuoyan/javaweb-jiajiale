@@ -1,0 +1,20 @@
+html{
+	line-height: 1.15;
+}
+body {
+    margin: 0;
+    overflow: auto;
+    font-size:14px;
+    min-height:100vh;
+    font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei";
+    background: #ffffff;
+    box-sizing: border-box;
+}
+small {
+    font-size: 80%;
+}
+
+
+
+
+

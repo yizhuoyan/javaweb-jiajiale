@@ -57,7 +57,7 @@ class TestVipManageServiceImpl extends AbstractSpringTest  {
 	@Test
 	void testQueryVipByKey() throws Exception{
 		String key=" %  ";
-		QueryResult<VipDetailEntity> result=service.queryVipByKey(key, 1, 5);
+		QueryResult<VipDetailEntity> result=service.queryVipByKey(null,key, 1, 5);
 		List<VipDetailEntity> rows=result.getRows();
 		for (VipDetailEntity v : rows) {
 			System.out.println(v);

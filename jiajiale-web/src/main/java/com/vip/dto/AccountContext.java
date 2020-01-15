@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class AccountContext {
 	private static final ThreadLocal<AccountContext> ACCOUNT_HOLDER=new ThreadLocal<>();
-	private String id;		
+	private String id;
 	private String account;		
 	private String name;		
 	private String avatar;
@@ -20,7 +20,11 @@ public class AccountContext {
 	private LocalDateTime timeLastLogin;		
 	private boolean isFirstLogin;
 	private String remark;		
-	private String lastLoginIp;		
+	private String lastLoginIp;
+    private String lastLoginDevice;
+    //所属角色
+    private String role;
+    private String token;
 	/**
 	 * 获取当前用户账号的id
 	 * @return

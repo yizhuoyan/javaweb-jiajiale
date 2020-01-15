@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>主页</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+
+        article{
+            height: 100vh;
+        }
+        article> header {
+            line-height: 80px;
+            background: #333366;
+            height: 80px;
+            padding:0 1em;
+            color: #fefefe;
+        }
+
+
+    </style>
+
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/yi.toast.js"></script>
+
+</head>
+<body>
+<article class="layout-vbox">
+    <header class="layout-hbox-between">
+        <div>
+            <h1>
+                <img src="/img/logo.200x200.png" width="50" height="50" alt="Logo">
+                佳佳乐VIP消费查询系统
+            </h1>
+        </div>
+        <div>
+    		<b id="userNameEL">{{currentUser.name}}({{currentUser.account}})</b>
+
+            <a href="javascript:" @click.prevent="logout">退出登录</a>
+    	</div>
+    </header>
+    <main class="grow">
+        <iframe name="mainFrame" src="index-welcome.html"></iframe>
+    </main>
+
+</article>
+
+<script>
+    const app = new Vue({
+        el: "body>article",
+        data: {
+            currentUser: null
+        },
+        created: function () {
+            const currentUser = sessionStorage.getItem("currentUser");
+            if (!currentUser) {
+                location.href = "/login/view.html";
+                return;
+            }
+
+            this.currentUser = JSON.parse(currentUser);
+        },
+        methods: {
+            "logout": function () {
+                const uid=this.currentUser.id;
+                axios.delete(`/api/session/${uid}`).then(r => {
+                    location.href = "/login/view.html";
+                });
+
+            }
+        }
+
+    });
+
+
+</script>
+</body>
+</html>

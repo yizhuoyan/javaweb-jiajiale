@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="UTF-8">
+<title>VIP消费记录查询</title>
+<link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+<artical>
+    <nav>
+        <ul class="breadcrumb">
+            <li><a href="/welcome/view.html">首页</a></li>
+            <li>VIP客户查询</li>
+        </ul>
+    </nav>
+	<section>
+        <form @submit.prevent="query" class="inline">
+			<p>
+				<label>
+					VIP(手机号):
+					<select>
+						<option>+86</option>
+						<option>+10</option>
+						<option>+11</option>
+					</select>
+					<input type="text"  value="13888888888"  maxlength="11" v-model="mobile"  autofocus>
+				</label>
+				<button style="line-height: 1.7em">Go</button>
+			</p>
+        </form>
+	</section>
+	<main>
+		<table class="data">
+		<thead>
+			<tr>
+				<th>序号</th>
+				<th>操作</th>
+				<th>客户(手机号)</th>
+				<th>关联订单</th>
+				<th>消费金额</th>
+				<th>消费时间</th>
+				<th>创建人</th>
+			</tr>
+		</thead>
+		<tbody v-if="resp===null">
+			<tr>
+				<td colspan="99">请输入手机号进行查询</td>
+			</tr>
+		</tbody>
+		<tbody v-else-if="resp.code!=='ok'">
+			<tr>
+				<td colspan="99">{{resp.message}}</td>
+			</tr>
+		</tbody>
+		<tbody v-else>
+			<template v-if="resp.data.totalRows>0">
+				<tr v-for="(row,i) in resp.data.rows">
+					<td>{{i+1}}</td>
+					<td><a :href="'/vip-consume/check.html#'+row.id" >详情</a></td>
+					<td>{{row.vipName}}({{row.mobile}})</td>
+					<td>{{row.orderId}}</td>
+					<td>{{row.consumeMoney}}</td>
+					<td>{{row.consumeTime}}</td>
+					<td>{{row.createUserName}}</td>
+				</tr>
+			</template>
+			<tr v-else>
+				<td colspan="99">很抱歉，未找到相关数据</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p v-if="resp!=null&&resp.data.totalRows>0">
+		<span> 共<b>{{resp.data.totalRows}}</b>条记录 每页<b>{{resp.data.pageSize}}</b>条
+			共<b>{{resp.data.totalPages}}</b>页
+		</span> <span> 
+		<button @click="pageNo-=1">上一页</button>
+		 <b>{{resp.data.pageNo}}</b>
+		<button @click="pageNo+=1">下一页</button>
+		</span>
+	</p>
+		
+	</main>		
+	</artical>
+	
+	<script src="/js/axios.min.js"></script>
+	<script src="/js/vue.js"></script>
+    <script src="/js/yi.toast.js"></script>
+    <script>
+  //网页加载完毕获取等级列表
+	const vue = new Vue({
+		el : "body>artical",//css选择器
+		data : {
+			resp:null,//应答对象
+			pageNo : 1,//输入页面
+			pageSize : 5,// 输入每页大小
+			mobile : "13888888888"//输入的查询关键字
+		},
+		watch : {
+			//当页码变化时
+			pageNo : function(newV, oldV) {
+				this.query();
+			}
+		},
+		methods : {
+			//后台查询
+			query : function(evt) {
+				if(this.resp!=null){
+					if(this.resp.code==="ok"){
+						if(this.resp.data.totalRows>0){
+							if(this.pageNo<1){
+								return;
+							}
+							if(this.pageNo>this.resp.data.totalPages){
+								return;
+							}
+						}
+					}
+				}
+				let mobile=this.mobile;
+				if(mobile.length===0){
+	       			toast("VIP手机号码必须输入");
+	       			return;
+	       		}
+	       		if(mobile.length<11){
+	       			toast("VIP手机号码不是合法的手机号");
+	       			return;
+	       		}
+				axios.get("/api/vipconsume").then(function(resp) {
+                    if (resp.code !== "ok") {
+                        toast(resp.message);
+                        return;
+                    }
+					vue.resp = resp;
+				})
+			}
+		}
+		
+	});
+    </script>
+	
+</body>
+</html>

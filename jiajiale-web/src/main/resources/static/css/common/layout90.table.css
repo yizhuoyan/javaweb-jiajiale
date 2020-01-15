@@ -1,0 +1,28 @@
+.layout-table {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content:flex-start;
+    align-content:stretch;
+    padding: 0 15px;
+}
+
+.layout-table > header {
+    flex:none;
+}
+
+.layout-table > main {
+    flex:auto;
+    overflow: auto;
+}
+
+.layout-table > footer {
+	padding-top:10px;
+	padding-bottom:10px;
+    flex:none;
+}
+
+
+
+
+
+

@@ -1,0 +1,12 @@
+.col-group {
+    display: flex !important;
+    flex-direction: column wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.col-group > .grow {
+    flex: auto;
+}
+
+

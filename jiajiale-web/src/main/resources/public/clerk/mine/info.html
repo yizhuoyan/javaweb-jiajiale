@@ -1,0 +1,85 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>主页</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/common.css">
+    <style>
+
+        article{
+            height: 100vh;
+        }
+        .menu {
+            width: 200px;
+            background: #336699;
+            box-sizing: border-box;
+            text-align: center;
+            list-style: none;
+            color: #FFFFFF;
+        }
+        .menu>li{
+
+        }
+        .menu>li>a{
+            padding: 10px 0;
+            display: block;
+            border-bottom: 1px solid #0e90d2;
+            text-decoration: none;
+        }
+        .menu>li>a.active{
+            background-color: #ffffff;
+            color: #000000;
+        }
+        .menu>li>a:hover{
+            background: #2a85a0;
+        }
+    </style>
+
+
+
+</head>
+<body>
+<nav>
+    <ul class="breadcrumb">
+        <li>个人信息</li>
+    </ul>
+</nav>
+<article class="layout-hbox">
+
+
+</article>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script>
+    const app = new Vue({
+        el: "body>article",
+        data: {
+            currentUser: null
+        },
+        created: function () {
+            const currentUser = sessionStorage.getItem("currentUser");
+            if (!currentUser) {
+                location.href = "/login/view.html";
+                return;
+            }
+
+            this.currentUser = JSON.parse(currentUser);
+        },
+        methods: {
+            "handleMenuActive":function (evt) {
+                let target=evt.target;
+                if(target.tagName==="A"){
+                    document.querySelector(".menu .active").classList.remove("active");
+                    target.classList.add("active");
+                }
+            }
+        }
+
+    });
+
+
+</script>
+</body>
+</html>

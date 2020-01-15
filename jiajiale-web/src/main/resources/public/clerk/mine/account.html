@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页</title>
+    <link href="/css/common.css"
+          rel="stylesheet">
+    <style>
+        h1.page-title{
+           font-size: 120%;
+           font-weight: bold;
+            padding: 1em 1em 0 1em;
+            border-bottom: 1px solid gray;
+
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <ul class="breadcrumb">
+        <li>帐号信息</li>
+    </ul>
+</nav>
+<section>
+    <form class="label12em">
+        <p>
+            <label for="accountEL">账号：</label>
+            <input disabled
+                   id="accountEL"
+                   placeholder=""
+                   type="text">
+            <em>系统登录帐号，不可修改</em>
+        </p>
+        <p>
+            <label for="nameEL">*名称：</label>
+            <input id="nameEL"
+                   name="name"
+                   placeholder=""
+                   type="text"
+                   v-model="params.name">
+
+            <button style="margin-left: 1em">修改名称</button>
+        </p>
+
+        <div>
+            <p>
+                <label for="lastLoginTimeEL">*上次登录时间：</label>
+                <input :value="params.lastLoginTime"
+                       disabled
+                       id="lastLoginTimeEL"
+                       name="lastLoginTime"
+                       placeholder=""
+                       type="text">
+            </p>
+            <p>
+                <label for="lastModifyPasswordTimeEL">*最后密码修改时间：</label>
+                <input :value="params.lastModifyPasswordTime"
+                       disabled
+                       id="lastModifyPasswordTimeEL"
+                       name="lastModifyPasswordTime"
+                       placeholder=""
+                       type="text">
+            </p>
+
+
+        </div>
+
+        <div>
+            <p>
+                <label for="lastLoginAgentEL">*上次登录设备：</label>
+                <input :value="params.lastLoginAgent"
+                       disabled
+                       id="lastLoginAgentEL"
+                       name="lastLoginAgent"
+                       placeholder=""
+                       type="text">
+            </p>
+            <p>
+                <label for="lastLoginIpEL">*上次登录IP：</label>
+                <input :value="params.lastLoginIp"
+                       disabled
+                       id="lastLoginIpEL"
+                       name="lastLoginIp"
+                       placeholder=""
+                       type="text">
+            </p>
+        </div>
+        <p>
+            <label for="createTimeEL">*创建时间：</label>
+            <input :value="params.createTime"
+                   disabled
+                   id="createTimeEL"
+                   name="createTime"
+                   placeholder=""
+                   type="text">
+        </p>
+    </form>
+</section>
+</body>
+</html>

@@ -1,0 +1,18 @@
+.pad {
+    padding: 1em;
+}
+.pad-h {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+.pad-v {
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+.pad-left{
+    padding-left: 1em;
+}
+.pad-right{
+    padding-right: 1em;
+}
+

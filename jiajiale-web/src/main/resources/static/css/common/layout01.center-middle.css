@@ -1,0 +1,27 @@
+.layout-hcenter-vcenter
+{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.layout-vcenter-hcenter
+{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout-hcenter{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items:stretch;
+}
+.layout-vcenter{
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items:stretch;
+}

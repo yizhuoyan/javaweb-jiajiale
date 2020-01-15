@@ -1,0 +1,105 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>主页</title>
+    <link href="/favicon.ico"
+          rel="shortcut icon">
+    <link href="/css/common.css"
+          rel="stylesheet">
+    <style>
+
+        article {
+            height: 100vh;
+        }
+
+        .menu {
+            width: 200px;
+            background: #333366;
+            box-sizing: border-box;
+            text-align: center;
+            list-style: none;
+            color: #FFFFFF;
+        }
+
+
+        .menu > a {
+            padding: 10px 0;
+            display: block;
+            border-bottom: 1px solid #0e90d2;
+            text-decoration: none;
+        }
+
+        .menu> a.active {
+            background-color: #ffffff;
+            color: #000000;
+        }
+
+        .menu > a:hover {
+            background: #2a85a0;
+        }
+    </style>
+
+    <script src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/yi.toast.js"></script>
+
+</head>
+<body>
+<article class="layout-hbox">
+    <div @click="handleMenuActive"
+         class="menu">
+        <a class="active"
+           href="account.html"
+           target="mineFrame">帐号信息
+        </a>
+        <a href="avatar.html"
+           target="mineFrame">头像照片
+        </a>
+        <a href="info.html"
+           target="mineFrame">个人信息
+        </a>
+        <a href="/login-log/view.html"
+           target="mineFrame">登录日志
+        </a>
+        <a href="/modify-password/view.html"
+           target="mineFrame">修改密码
+        </a>
+    </div>
+    <main class="grow">
+        <iframe name="mineFrame"
+                src="account.html"></iframe>
+    </main>
+</article>
+
+<script>
+    const app = new Vue({
+        el: "body>article",
+        data: {
+            currentUser: null
+        },
+        created: function () {
+            const currentUser = sessionStorage.getItem("currentUser");
+            if (!currentUser) {
+                location.href = "/login/view.html";
+                return;
+            }
+
+            this.currentUser = JSON.parse(currentUser);
+        },
+        methods: {
+            "handleMenuActive": function (evt) {
+                let target = evt.target;
+                if (target.tagName === "A") {
+                    document.querySelector(".menu .active").classList.remove("active");
+                    target.classList.add("active");
+                }
+            }
+        }
+
+    });
+
+
+</script>
+</body>
+</html>

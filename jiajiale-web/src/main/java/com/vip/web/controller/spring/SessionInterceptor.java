@@ -1,6 +1,7 @@
 package com.vip.web.controller.spring;
 
 import com.vip.dto.AccountContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,17 +11,17 @@ import javax.servlet.http.HttpSession;
 /**
  * Created by Administrator on 5/21.
  */
+@Slf4j
 public class SessionInterceptor implements HandlerInterceptor {
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        System.out.println("判断是否已登录");
+        log.debug("{1}判断是否已登录",request.getRequestURI());
         if(isLogin(request)){
-            System.out.println("已登录");
+            log.debug("已登录");
             return true;
         }
-        System.out.println("未登录");
-
-        //response.sendRedirect(request.getContextPath()+"/login.html");
+        log.debug("未登录，403返回");
         response.sendError(403);
         return false;
     }
@@ -30,7 +31,6 @@ public class SessionInterceptor implements HandlerInterceptor {
         if(session==null){
             return false;
         }
-
         return session.getAttribute(AccountContext.class.getName())!=null;
     }
 }

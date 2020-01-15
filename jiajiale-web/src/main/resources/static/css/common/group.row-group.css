@@ -1,0 +1,12 @@
+.group-row {
+    display: flex !important;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.group-row > .grow {
+    flex: auto;
+}
+
+

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.dao.SysAccountDao">
+
+    <resultMap type="SysAccountEntity" id="SysAccountEntityMap">
+        <result property="id" column="id" />
+        <result property="account" column="account" />
+        <result property="name" column="name" />
+        <result property="password" column="password" />
+        <result property="avator" column="avator" />
+        <result property="timeCreate" column="time_create" />
+        <result property="timeLastAlterPassword" column="time_last_alter_password" />
+        <result property="timeLastLogin" column="time_last_login" />
+        <result property="remark" column="remark" />
+        <result property="lastLoginAgent" column="last_login_agent" />
+        <result property="lastLoginIp" column="last_login_ip" />
+        <result property="role" column="role" />
+        <result property="status" column="status" />
+    </resultMap>
+
+    <insert id="insert" >
+        insert into sys_account(account, name, password, avator, time_create, time_last_alter_password, time_last_login, remark, last_login_agent, last_login_ip, role, status)
+        values (#{account}, #{name}, #{password}, #{avator}, #{timeCreate}, #{timeLastAlterPassword}, #{timeLastLogin}, #{remark}, #{lastLoginAgent}, #{lastLoginIp}, #{role}, #{status})
+    </insert>
+    
+    <delete id="delete">
+        delete from sys_account 
+        where id = #{id}
+    </delete> 
+    
+    <update id="update">
+        update sys_account
+        <set>
+            <if test="e.account != null">
+                account = #{e.account},
+            </if>
+            <if test="e.name != null">
+                name = #{e.name},
+            </if>
+            <if test="e.password != null">
+                password = #{e.password},
+            </if>
+            <if test="e.avator != null">
+                avator = #{e.avator},
+            </if>
+            <if test="e.timeCreate != null">
+                time_create = #{e.timeCreate},
+            </if>
+            <if test="e.timeLastAlterPassword != null">
+                time_last_alter_password = #{e.timeLastAlterPassword},
+            </if>
+            <if test="e.timeLastLogin != null">
+                time_last_login = #{e.timeLastLogin},
+            </if>
+            <if test="e.remark != null">
+                remark = #{e.remark},
+            </if>
+            <if test="e.lastLoginAgent != null">
+                last_login_agent = #{e.lastLoginAgent},
+            </if>
+            <if test="e.lastLoginIp != null">
+                last_login_ip = #{e.lastLoginIp},
+            </if>
+            <if test="e.role != null">
+                role = #{e.role},
+            </if>
+            <if test="e.status != null">
+                status = #{e.status},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <select id="selectById" resultMap="SysAccountEntityMap">
+        select *   
+        from sys_account
+        where id = #{id}
+    </select>
+    
+    <select id="select" resultMap="SysAccountEntityMap">
+        select *   
+        from sys_account
+        where ${column} = #{value}
+    </select>
+    
+    <select id="exists" resultType="boolean">
+        select count(*)   
+        from sys_account
+        where ${column} = #{value}
+    </select>
+    
+    <select id="selectAll" resultMap="SysAccountEntityMap">
+        select *
+        from sys_account
+        <if test="orderBy!=null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <!--其他查询-->
+    
+
+
+
+</mapper>

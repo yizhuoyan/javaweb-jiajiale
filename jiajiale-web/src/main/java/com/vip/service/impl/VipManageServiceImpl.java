@@ -27,19 +27,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 @Service
+@Transactional
 public class VipManageServiceImpl implements VipManageService {
 	@Autowired
 	VipDetailDao vdao;
 	@Autowired
 	VipRankDao rdao;
 
-	@Autowired
-	Validator validator;
-
-	@Autowired
-    MessageSource messageSource;
 	@Override
-	@Transactional
 	public void addVip(@NonNull VipAo ao) throws Exception {
 
 			//1验证参数
@@ -92,7 +87,7 @@ public class VipManageServiceImpl implements VipManageService {
 			e.setLastConsumeTime(null);
 			//账号使用手机号
 			e.setMobile(mobile);
-			e.setAccount(mobile);
+			e.setNo(mobile);
 			e.setSex(sex);
 			e.setBirthday(birthday);
 			e.setQq(qq);
@@ -101,7 +96,7 @@ public class VipManageServiceImpl implements VipManageService {
 			e.setZipCode(zipCode);
 			e.setRemark(remark);
 			
-			e.setRankId(rankId);
+			e.setRankId(parseInt(rankId));
 			e.setCreateUserId(AccountContext.currentAccountId());
 			e.setCreateTime(LocalDateTime.now());
 			vdao.insert(e);
@@ -126,11 +121,14 @@ public class VipManageServiceImpl implements VipManageService {
 				//2.1 TODO:降低数据库压力，如果mobile符合手机号特征，则不进行数据库查找。
 				//2.2 执行业务逻辑
 					VipDetailEntity vip=vdao.select("id",id);
+					if(vip==null){
+					    throw new VipException("数据不存在");
+                    }
 					return vip;
 	}
 
 	@Override
-	public QueryResult<VipDetailEntity> queryVipByKey(String key, int pageNo, int pageSize) throws Exception {
+	public QueryResult<VipDetailEntity> queryVipByKey(Integer rankId,String key, int pageNo, int pageSize) throws Exception {
 		// 1 验证参数(参数清理)
 		key = trim(key);
 		if (key != null) {
@@ -146,7 +144,7 @@ public class VipManageServiceImpl implements VipManageService {
 		// 2 执行业务逻辑
 			PageHelper.startPage(pageNo, pageSize);
 			
-			PageInfo<VipDetailEntity> page=new PageInfo<>(vdao.selectByKey(key));
+			PageInfo<VipDetailEntity> page=new PageInfo<>(vdao.selectByRankIdAndKey(rankId,key));
 			// 3 组装结果
 			QueryResult<VipDetailEntity> result=new QueryResult<VipDetailEntity>();
 			result.setPageNo(pageNo);

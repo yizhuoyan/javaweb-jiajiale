@@ -1,20 +1,19 @@
 package com.vip.service.impl;
 
+import com.vip.ao.ModifyPasswordAo;
+import com.vip.dao.SysAccountDao;
+import com.vip.dto.AccountContext;
+import com.vip.entity.SysAccountEntity;
+import com.vip.service.UserAccountService;
+import com.yizhuoyan.common.BeanMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.yizhuoyan.common.*;
-import com.vip.ao.ModifyPasswordAo;
-import com.vip.dao.SysUserDao;
-import com.vip.dto.AccountContext;
-import com.vip.entity.SysUserEntity;
-import com.vip.service.UserAccountService;
-
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
 	@Autowired
-	SysUserDao udao;
+    SysAccountDao udao;
 
 	@Override
 	public AccountContext login(String account, String password) throws Exception {
@@ -23,7 +22,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 		password = $("密码", password);
 
 		// 2 执行业务逻辑
-		SysUserEntity u = udao.select("account", account);
+		SysAccountEntity u = udao.select("account", account);
 		assertNotNull("账号和密码不匹配", u);
 		assertEquals("账号和密码不匹配", u.getPassword(), password);
 
@@ -48,7 +47,7 @@ public class UserAccountServiceImpl implements UserAccountService {
 		String newPasswordConfirm = $("新密码确认", ao.getNewPasswordConfirm());
 		// 1.1 两次密码一致 新密码是否符合规范(6-16位)
 		assertEquals("两次密码不一致", newPassword, newPasswordConfirm);
-			SysUserEntity u = udao.select("id", id);
+			SysAccountEntity u = udao.select("id", id);
 			// 1.2 id存在
 			assertNotNull("id不存在", u);
 			// 1.3 old密码必须和原密码一致

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>修改密码</title>
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+<article>
+    <nav>
+        <ul class="breadcrumb">
+            <li>忘记密码</li>
+        </ul>
+    </nav>
+    <menu>
+        <button type="button" @click="submit">确定</button>
+    </menu>
+    <form>
+        <p>
+            <label>旧&emsp;密&emsp;码*：<input required type="password" v-model="formdata.oldPassword"></label>
+        </p>
+        <p>
+            <label>新&emsp;密&emsp;码*：<input required type="password" v-model="formdata.newPassword"></label>
+        </p>
+        <p>
+            <label>新密码确认*：<input required type="password" v-model="formdata.newPasswordConfirm"></label>
+        </p>
+    </form>
+</article>
+<script src="/js/axios.min.js"></script>
+<script src="/js/vue.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script>
+    const app = new Vue({
+        el: "body>article",
+        data: {
+            formdata: {}
+        },
+        methods: {
+            submit: function () {
+                const uid = sessionStorage.getItem("uid");
+                axios.patch(`/api/user/${uid}`, this.formdata)
+                    .then(resp => {
+                        if (resp.code !== "ok") {
+                            toast(resp.message);
+                            return;
+                        }
+                        alert("修改密码成功,请重新登录");
+                        window.top.location.href = "/login.html";
+                    })
+            }
+        }
+    });
+
+</script>
+
+</body>
+</html>

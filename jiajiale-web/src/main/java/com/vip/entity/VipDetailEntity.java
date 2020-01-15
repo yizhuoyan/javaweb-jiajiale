@@ -14,8 +14,8 @@ import lombok.Data;
 public class VipDetailEntity{
 	    /***/
 		private String id;		
-	   /**vip账号(目前客户手机号)*/
-		private String account;		
+	   /**vip-会员号码*/
+		private String no;
 	
 		/**手机号，可作为会员凭证*/
 		private String mobile;		
@@ -44,7 +44,7 @@ public class VipDetailEntity{
 		/**等级*/
 		private VipRankEntity rank;
 		/*冗余*/
-		private String rankId; 
+		private Integer rankId;
 	
 		/**总优惠金额*/
 		private Integer totalDiscountMoney;
@@ -56,7 +56,7 @@ public class VipDetailEntity{
 		private String remark;		
 	
 		/**创建人*/
-		private SysUserEntity createUser;	
+		private SysAccountEntity createUser;
 		private String createUserId;
 	
 		/**创建时间*/

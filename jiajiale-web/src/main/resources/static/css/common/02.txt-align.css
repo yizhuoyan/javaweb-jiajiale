@@ -1,0 +1,15 @@
+.txt-center,
+.text-center
+{
+	text-align: center;
+}
+.txt-left,
+.text-left
+{
+    text-align: left;
+}
+.txt-right,
+.text-right
+{
+    text-align: right;
+}

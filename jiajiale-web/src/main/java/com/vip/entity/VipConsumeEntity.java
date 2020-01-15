@@ -37,7 +37,7 @@ public class VipConsumeEntity{
 		private int consumeMoney;		
 	
 		/**录入人*/
-		private SysUserEntity createUser;	
+		private SysAccountEntity createUser;
 		private String createUserId;
 	
 		/**状态0=正常 1=作废*/

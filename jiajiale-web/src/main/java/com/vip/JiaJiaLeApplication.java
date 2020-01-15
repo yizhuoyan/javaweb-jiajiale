@@ -1,5 +1,6 @@
 package com.vip;
 
+import com.vip.dto.AccountContext;
 import com.vip.service.VipManageService;
 import com.vip.service.impl.VipManageServiceImpl;
 import com.vip.web.controller.spring.SessionInterceptor;
@@ -20,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
@@ -30,59 +31,52 @@ import javax.validation.Validator;
  */
 @MapperScan("com.vip.dao")
 @SpringBootApplication
-@Controller
-public class JiaJiaLeApplication  {
+public class JiaJiaLeApplication implements WebMvcConfigurer {
 
     /**
      * 验证器
+     *
      * @return
      */
     @Bean
-    public Validator createValidator(){
-        return Validation.byProvider(HibernateValidator.class )
+    public Validator createValidator() {
+        return Validation.byProvider(HibernateValidator.class)
                 .configure()
-                .failFast( true )
+                .failFast(false)
                 .buildValidatorFactory()
                 .getValidator();
     }
 
-    @Configuration
-    public static class AppWebMVCConfig implements WebMvcConfigurer {
-        @Override
-        public void addFormatters(FormatterRegistry registry) {
-            //添加字符串清理coverter
-            registry.addConverter(new StringTrimConverter());
-        }
-
-
-        /**
-         * 添加权限拦截器
-         * @param registry
-         */
-        @Override
-        public void addInterceptors(InterceptorRegistry registry) {
-            registry.addInterceptor(new SessionInterceptor())
-                    .addPathPatterns("/**/*.html","/api/**")
-            .excludePathPatterns("/login.html","/api/session")
-            ;
-        }
-
-        /**
-         * 添加跨域配置
-         * @param registry
-         */
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/api/**")
-                    .allowCredentials(true)
-                    .allowedMethods("*");
-        }
+    @Override
+    public void addFormatters(FormatterRegistry registry) {
+        //添加字符串清理coverter
+        registry.addConverter(new StringTrimConverter());
     }
 
-    @RequestMapping("/")
-    public String welcome(){
-        return "/login.html";
+
+    /**
+     * 添加权限拦截器
+     *
+     * @param registry
+     */
+    public void addInterceptors1(InterceptorRegistry registry) {
+        registry.addInterceptor(new SessionInterceptor())
+                .addPathPatterns("/api/**")
+                .excludePathPatterns("/api/session");
     }
+
+    /**
+     * 添加跨域配置
+     *
+     * @param registry
+     */
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/api/**")
+                .allowCredentials(true)
+                .allowedMethods("*");
+    }
+
 
     public static void main(String[] args) {
         SpringApplication.run(JiaJiaLeApplication.class);

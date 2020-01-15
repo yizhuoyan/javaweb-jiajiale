@@ -1,0 +1,16 @@
+.breadcrumb{
+	display: inline;
+}
+
+.breadcrumb:before{
+	content: "当前位置："
+}
+
+.breadcrumb > li {
+    display: inline;
+}
+
+.breadcrumb > li + li:before {
+    color: #ccc;
+    content: "> ";
+}

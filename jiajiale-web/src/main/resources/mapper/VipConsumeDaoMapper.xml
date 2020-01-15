@@ -65,7 +65,7 @@
   		<association property="createUser" 
   		column="create_User_id" 
   		fetchType="lazy"
-  		select="com.vip.dao.SysUserDao.selectById" >
+  		select="com.vip.dao.SysAccountDao.selectById" >
   		</association>
   		
   		

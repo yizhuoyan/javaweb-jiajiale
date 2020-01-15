@@ -1,0 +1,20 @@
+
+form.vertical p, p.vertical {
+	display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+form.vertical p>.grow, p.vertical>.grow {
+	flex: none;
+	align-self: stretch;
+}
+
+form.vertical p label, p.vertical label {
+	margin-bottom: 1em;
+	text-align: left;
+	padding-right: 0;
+}
+
+

@@ -5,7 +5,7 @@ package com.vip.exception;
  *
  */
 public class VipException extends RuntimeException {
-	String code;
+	public final String code;
 
 	public VipException(String code) {
 		super();

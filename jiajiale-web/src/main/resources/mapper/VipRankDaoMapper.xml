@@ -1,29 +1,77 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vip.dao.VipRankDao">
-  	
-  	<select id="select" resultMap="vipRankMap">
-  		select * from vip_rank where 
-  		${column}=#{value}
-  	</select>
-  	 <select id="exists" resultType="boolean">
-  		select count(*)>0 from vip_rank where 
-  		${column}=#{value}
-  	</select>
-  	
-	<select id="selectById" resultMap="vipRankMap">
-  		select * from vip_rank where 
-  		id=#{id}
-  	</select>
-  	
-  	<select id="selectAll" resultMap="vipRankMap">
-  		select * from vip_rank 
-  		order by show_order
-  	</select>
-  	
-  	<resultMap type="VipRankEntity" id="vipRankMap">
-  		<id column="id" property="id"/>
-  	</resultMap>
+
+    <resultMap type="VipRankEntity" id="VipRankEntityMap">
+        <result property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="needConsume" column="need_consume" />
+        <result property="enjoyDiscount" column="enjoy_discount" />
+        <result property="showOrder" column="show_order" />
+        <result property="remark" column="remark" />
+    </resultMap>
+
+    <insert id="insert" >
+        insert into vip_rank(name, need_consume, enjoy_discount, show_order, remark)
+        values (#{name}, #{needConsume}, #{enjoyDiscount}, #{showOrder}, #{remark})
+    </insert>
+    
+    <delete id="delete">
+        delete from vip_rank 
+        where id = #{id}
+    </delete> 
+    
+    <update id="update">
+        update vip_rank
+        <set>
+            <if test="e.name != null">
+                name = #{e.name},
+            </if>
+            <if test="e.needConsume != null">
+                need_consume = #{e.needConsume},
+            </if>
+            <if test="e.enjoyDiscount != null">
+                enjoy_discount = #{e.enjoyDiscount},
+            </if>
+            <if test="e.showOrder != null">
+                show_order = #{e.showOrder},
+            </if>
+            <if test="e.remark != null">
+                remark = #{e.remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <select id="selectById" resultMap="VipRankEntityMap">
+        select *   
+        from vip_rank
+        where id = #{id}
+    </select>
+    
+    <select id="select" resultMap="VipRankEntityMap">
+        select *   
+        from vip_rank
+        where ${columnName} = #{columnValue}
+    </select>
+    
+    <select id="exists" resultType="boolean">
+        select count(*)   
+        from vip_rank
+        where ${columnName} = #{columnValue}
+    </select>
+    
+    <select id="selectAll" resultMap="VipRankEntityMap">
+        select *
+        from vip_rank
+        <if test="orderBy!=null">
+            order by ${orderBy}
+        </if>
+    </select>
+
+    <!--其他查询-->
+    
+
+
+
 </mapper>

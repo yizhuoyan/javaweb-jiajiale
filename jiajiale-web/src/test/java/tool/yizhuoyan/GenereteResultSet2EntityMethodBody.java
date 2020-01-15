@@ -1,16 +1,16 @@
 package tool.yizhuoyan;
 
+import com.vip.entity.SysAccountEntity;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.vip.entity.SysUserEntity;
 
 public class GenereteResultSet2EntityMethodBody {
 
 	
 	public static void main(String[] args) {
-		run(SysUserEntity.class);
+		run(SysAccountEntity.class);
 	}
 	
 	

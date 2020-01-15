@@ -1,0 +1,127 @@
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>店员-主页</title>
+    <link href="/favicon.ico"
+          rel="shortcut icon">
+    <link href="/css/common.css"
+          rel="stylesheet">
+    <style>
+        article {
+            height: 100vh;
+        }
+
+        article > header {
+            line-height: 50px;
+            background: #333366;
+            height: 50px;
+            padding: 0 1em;
+            color: #fefefe;
+        }
+
+        .menu {
+            background: #99CC33;
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            justify-content: space-around;
+        }
+
+        .menu >  a {
+            padding: 1em;
+            flex: auto;
+            display: block;
+            text-decoration: none;
+            text-align: center;
+        }
+        .menu > a.active{
+            background: #ffffff;
+        }
+        .menu > a:hover {
+            background: #eeeeff;
+        }
+    </style>
+
+
+
+</head>
+<body>
+<article class="layout-vbox">
+    <header class="layout-hbox-between">
+        <div>
+            <h4>
+                <img alt="Logo"
+                     height="32"
+                     src="/img/logo.32x32.png"
+                     width="32">
+                佳佳乐VIP消费查询系统
+            </h4>
+        </div>
+        <div>
+            <b id="userNameEL">{{currentUser.name}}({{currentUser.account}})</b>
+            <a @click.prevent="logout"
+               href="javascript:">退出登录
+            </a>
+        </div>
+    </header>
+    <section class="menu" @click="handleMenuActive">
+        <a class="active" href="/clerk/vip-query/view.html"
+           target="mainFrame">VIP客户查询
+        </a>
+        <a href="/clerk/add-vip/view.html"
+           target="mainFrame">新增VIP客户
+        </a>
+        <a href="/clerk/consume-manage/list/view.html"
+           target="mainFrame">VIP客户消费记录
+        </a>
+        <a href="/clerk/mine/view.html"
+           target="mainFrame">个人中心
+        </a>
+    </section>
+    <main class="grow layout-hcenter-vcenter">
+        <iframe name="mainFrame" src="/clerk/mine/view.html"></iframe>
+    </main>
+
+</article>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script>
+    const app = new Vue({
+        el: "body>article",
+        data: {
+            currentUser: null
+        },
+        created: function () {
+            const currentUser = sessionStorage.getItem("currentUser");
+            if (!currentUser) {
+                location.href = "/login/view.html";
+                return;
+            }
+            this.currentUser = JSON.parse(currentUser);
+
+        },
+        methods: {
+            handleMenuActive:function (evt) {
+              let target=evt.target;
+
+              if(target.tagName==="A"){
+                  target.parentNode.querySelector(".active").classList.remove("active");
+                  target.classList.add("active");
+              }
+            },
+            "logout": function () {
+                const uid = this.currentUser.id;
+                axios.delete(`/api/session/${uid}`).then(r => {
+                    location.href = "/login/view.html";
+                });
+
+            }
+        }
+
+    });
+
+
+</script>
+</body>
+</html>

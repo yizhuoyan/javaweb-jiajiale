@@ -1,5 +1,7 @@
 package tool.yizhuoyan;
 
+import com.vip.entity.SysAccountEntity;
+
 import java.lang.reflect.Method;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -7,13 +9,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.vip.entity.SysUserEntity;
-
 public class SQLUtil {
 	
 	
 	public static void main(String[] args) throws Exception {
-		Class type=SysUserEntity.class;
+		Class type= SysAccountEntity.class;
 		String sql = generateInsertSql(type);
 		System.out.println(sql);
 	}

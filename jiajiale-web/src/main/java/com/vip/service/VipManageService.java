@@ -37,7 +37,7 @@ public interface VipManageService extends CommonService{
 	 * @param pageSize
 	 * @throws Exception
 	 */
-	QueryResult<VipDetailEntity> queryVipByKey(String key,int pageNo,int pageSize)throws Exception;
+	QueryResult<VipDetailEntity> queryVipByKey(Integer rankId,String key,int pageNo,int pageSize)throws Exception;
 	
 	/**
 	 * 更新客户基础信息

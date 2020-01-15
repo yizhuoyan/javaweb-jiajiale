@@ -23,7 +23,7 @@ public class TestSysVipDetailDao extends AbstractSpringTest {
 		e.setTotalConsumeMoney(27);
 		e.setLastConsumeTime(LocalDateTime.now());
 		e.setId("id3813");
-		e.setAccount("account3148");
+		e.setNo("account3148");
 		e.setMobile("mobile8685");
 		e.setSex(false);
 		e.setBirthday(LocalDate.now());
@@ -33,7 +33,7 @@ public class TestSysVipDetailDao extends AbstractSpringTest {
 		e.setZipCode("zipCode7067");
 		e.setRemark("remark2960");
 		
-		e.setRankId("1");
+		e.setRankId(1);
 		e.setCreateUserId("00000000000000000000000000000000");
 		e.setCreateTime(LocalDateTime.now());
 

@@ -2,7 +2,7 @@ package com.vip.vo;
 
 import java.time.LocalDateTime;
 
-import com.vip.entity.SysUserEntity;
+import com.vip.entity.SysAccountEntity;
 import com.vip.entity.VipConsumeEntity;
 import com.vip.entity.VipDetailEntity;
 
@@ -22,7 +22,7 @@ public class VipConsumeListVO {
 	public static VipConsumeListVO of(VipConsumeEntity e) {
 		if(e==null)return null;
 		VipConsumeListVO vo=new VipConsumeListVO();
-		SysUserEntity createUser=e.getCreateUser();
+		SysAccountEntity createUser=e.getCreateUser();
 		vo.setCreateUserName(createUser.getName());
 		vo.setId(e.getId());
 		VipDetailEntity vip=e.getVip();

@@ -1,0 +1,13 @@
+article,header,footer,section,aside,main,menu
+figcaption,figure,p
+fieldset,div{
+    box-sizing: border-box;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+body>:only-child{
+    min-height: 100%;
+    width: 100%;
+}

@@ -2,7 +2,7 @@ package com.vip.vo;
 
 import java.time.LocalDateTime;
 
-import com.vip.entity.SysUserEntity;
+import com.vip.entity.SysAccountEntity;
 import com.vip.entity.VipConsumeEntity;
 import com.vip.entity.VipDetailEntity;
 
@@ -11,7 +11,7 @@ import lombok.Data;
 public class VipConsumeDetailVO {
 	private String id;		
 	private String mobile;
-	private String account;
+	private String no;
 	private String vipId;
 	private String vipName;
 	private LocalDateTime consumeTime;		
@@ -34,12 +34,12 @@ public class VipConsumeDetailVO {
 	public static VipConsumeDetailVO of(VipConsumeEntity e) {
 		VipConsumeDetailVO vo=new VipConsumeDetailVO();
 		vo.setActualPayMoney(e.getActualPayMoney());
-		SysUserEntity createUser=e.getCreateUser();
+		SysAccountEntity createUser=e.getCreateUser();
 		vo.setCreateUserName(createUser.getName());
 		vo.setId(e.getId());
 		VipDetailEntity vip=e.getVip();
 		vo.setMobile(vip.getMobile());
-		vo.setAccount(vip.getAccount());
+		vo.setNo(vip.getNo());
 		vo.setVipId(e.getVipId());
 		vo.setVipName(vip.getName());
 		vo.setConsumeTime(e.getConsumeTime());

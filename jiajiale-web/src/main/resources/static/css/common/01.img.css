@@ -1,0 +1,9 @@
+img{
+    outline: 1px dotted black;
+    cursor: pointer;
+}
+img[src]{
+    border-style: none;
+    outline: none;
+    cursor: pointer;
+}

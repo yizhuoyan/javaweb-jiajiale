@@ -28,6 +28,7 @@
             fontSize: "14px",
             padding: "5px 1em",
             borderRadius: "5px",
+            whiteSpace:"pre",
             boxShadow: "inset 0 1px 1px rgba(0, 0, 0, .075)",
             display:"none"
         };

@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.vip.dto.JSONResponse;
 import com.vip.exception.VipException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Set;
 
 @ControllerAdvice
 public class AllExceptionHandler {
@@ -25,7 +28,20 @@ public class AllExceptionHandler {
         }
         return JSONResponse.fail(message.toString());
     }
-	
+
+    @ExceptionHandler
+    public @ResponseBody
+    JSONResponse handle(ConstraintViolationException e) {
+        StringBuilder message=new StringBuilder();
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        for (ConstraintViolation<?> constraintViolation : constraintViolations) {
+            message.append(constraintViolation.getMessage());
+            message.append("\n");
+        }
+
+        return JSONResponse.fail(message.toString());
+    }
+
 	@ExceptionHandler
 	public @ResponseBody
     JSONResponse handle(VipException e) {

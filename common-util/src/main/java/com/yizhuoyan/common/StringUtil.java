@@ -76,7 +76,7 @@ public interface StringUtil {
 	 * @param defaultInt
 	 * @return
 	 */
-	public default int parseInt(String s, int defaultInt) {
+	public default Integer parseInt(String s, Integer defaultInt) {
 		try {
 			if (s == null)
 				return defaultInt;

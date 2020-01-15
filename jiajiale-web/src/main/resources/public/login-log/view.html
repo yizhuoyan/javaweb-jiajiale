@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>登录日志</title>
+    <link href="/css/common.css" rel="stylesheet">
+</head>
+<body>
+<article>
+    <nav>
+        <ul class="breadcrumb">
+            <li>登录日志</li>
+        </ul>
+    </nav>
+    <menu>
+        <a class="btn" href="../add/view.html">导出</a>
+    </menu>
+    <section>
+        <form>
+            <div>
+                <p>
+                    <label>登录时间：</label>
+                    <span>
+                    <input  type="date" v-model="params.startDate">
+                    ~
+                    <input  type="date" v-model="params.endDate">
+                    </span>
+                </p>
+                <button>查询</button>
+            </div>
+        </form>
+    </section>
+    <main>
+        <table class="data">
+            <thead>
+            <tr>
+                <th>序号</th>
+                <th>登录时间</th>
+                <th>登录IP</th>
+                <th>登录设备</th>
+                <th>下线时间</th>
+                <th>在线时长</th>
+            </tr>
+            </thead>
+            <tbody v-if="resp===null">
+            <tr>
+                <td colspan="99">加载中...</td>
+            </tr>
+            </tbody>
+            <tbody v-else-if="resp.code!=='ok'">
+            <tr>
+                <td colspan="99">{{resp.message}}</td>
+            </tr>
+            </tbody>
+            <tbody v-else>
+            <template v-if="resp.data.totalRows>0">
+                <tr v-for="(row,i) in resp.data.rows">
+                    <td>{{i+1}}</td>
+                    <td>{{row.vipName}}({{row.mobile}})</td>
+                    <td>{{row.orderId}}</td>
+                    <td>{{row.consumeMoney}}</td>
+                    <td>{{row.consumeTime}}</td>
+                    <td>{{row.createUserName}}</td>
+                </tr>
+            </template>
+            <tr v-else>
+                <td colspan="99">很抱歉，未找到相关数据</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p class="layout-hbox-between pad" v-if="resp!=null&&resp.data.totalRows>0">
+            <span class="layout-hcell">
+                共<b>{{resp.data.totalRows}}</b>条记录
+                每页<b>{{resp.data.pageSize}}</b>条
+                共<b>{{resp.data.totalPages}}</b>页
+            </span>
+            <span>
+                <button @click="pageNo-=1">上一页</button>
+                 <b>{{resp.data.pageNo}}</b>
+                <button @click="pageNo+=1">下一页</button>
+            </span>
+        </p>
+    </main>
+</article>
+<script src="/js/axios.min.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script src="/js/vue.js"></script>
+<script>
+    const app = new Vue({
+        el: "body>article",//css选择器
+        data: {
+            resp: null,//应答对象
+            params: {
+                pageNo: 1,//输入页面
+                pageSize: 5,// 输入每页大小
+                key: null//输入的查询关键字
+            }
+        },
+        watch: {
+            //当页码变化时
+            pageNo: function (newV, oldV) {
+                this.query();
+            }
+        },
+        methods: {
+            //后台查询
+            query: function (evt) {
+                if (this.resp != null) {
+                    if (this.resp.code === "ok") {
+                        if (this.resp.data.totalRows > 0) {
+                            if (this.pageNo < 1) {
+                                return;
+                            }
+                            if (this.pageNo > this.resp.data.totalPages) {
+                                return;
+                            }
+                        }
+                    }
+                }
+                axios.get("/api/vipconsume", this.params).then(resp => {
+                    if (resp.code !== "ok") {
+                        toast("系统繁忙，请稍后再试");
+                        return;
+                    }
+                    app.resp = resp;
+                })
+            }
+        },
+        //当vue对象被创建时
+        created: function () {
+            this.query();
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,14 +1,9 @@
 package com.vip.ao;
 
-import java.time.LocalDateTime;
-
-import com.vip.entity.SysUserEntity;
-import com.vip.entity.VipRankEntity;
-
 import lombok.Data;
-import org.springframework.validation.annotation.Validated;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * VIP输入对象
