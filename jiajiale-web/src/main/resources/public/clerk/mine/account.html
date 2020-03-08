@@ -16,6 +16,7 @@
     </style>
 </head>
 <body>
+<article>
 <nav>
     <ul class="breadcrumb">
         <li>帐号信息</li>
@@ -27,6 +28,7 @@
             <label for="accountEL">账号：</label>
             <input disabled
                    id="accountEL"
+                   :value="currentAccount.account"
                    placeholder=""
                    type="text">
             <em>系统登录帐号，不可修改</em>
@@ -37,15 +39,15 @@
                    name="name"
                    placeholder=""
                    type="text"
-                   v-model="params.name">
+                   v-model="currentAccount.name">
 
-            <button style="margin-left: 1em">修改名称</button>
+            <button type="button" @click="handleChangeAccountName" style="margin-left: 1em">修改名称</button>
         </p>
 
         <div>
             <p>
                 <label for="lastLoginTimeEL">*上次登录时间：</label>
-                <input :value="params.lastLoginTime"
+                <input :value="currentAccount.lastLoginTime"
                        disabled
                        id="lastLoginTimeEL"
                        name="lastLoginTime"
@@ -54,7 +56,7 @@
             </p>
             <p>
                 <label for="lastModifyPasswordTimeEL">*最后密码修改时间：</label>
-                <input :value="params.lastModifyPasswordTime"
+                <input :value="currentAccount.lastModifyPasswordTime"
                        disabled
                        id="lastModifyPasswordTimeEL"
                        name="lastModifyPasswordTime"
@@ -68,7 +70,7 @@
         <div>
             <p>
                 <label for="lastLoginAgentEL">*上次登录设备：</label>
-                <input :value="params.lastLoginAgent"
+                <input :value="currentAccount.lastLoginAgent"
                        disabled
                        id="lastLoginAgentEL"
                        name="lastLoginAgent"
@@ -77,7 +79,7 @@
             </p>
             <p>
                 <label for="lastLoginIpEL">*上次登录IP：</label>
-                <input :value="params.lastLoginIp"
+                <input :value="currentAccount.lastLoginIp"
                        disabled
                        id="lastLoginIpEL"
                        name="lastLoginIp"
@@ -87,7 +89,7 @@
         </div>
         <p>
             <label for="createTimeEL">*创建时间：</label>
-            <input :value="params.createTime"
+            <input :value="currentAccount.createTime"
                    disabled
                    id="createTimeEL"
                    name="createTime"
@@ -96,5 +98,34 @@
         </p>
     </form>
 </section>
+</article>
+<script src="/js/vue.js"></script>
+<script src="/js/axios.min.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script>
+    const app = new Vue({
+        el: "body>article",
+        data: {
+            currentAccount: null
+        },
+        methods:{
+            "handleChangeAccountName":function (evt) {
+                axios.put("/api/account/name",{
+                    name:"name"
+                }).then(function (resp) {
+                    if(resp.code==="ok"){
+                        toast("修改成功");
+                        return;
+                    }
+                    toast(resp.message);
+                })
+            }
+        },
+        created:function () {
+            const currentAccountJsonString = sessionStorage.getItem("currentAccount");
+            this.currentAccount = JSON.parse(currentAccountJsonString);
+        }
+    });
+</script>
 </body>
 </html>

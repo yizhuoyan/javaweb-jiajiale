@@ -54,7 +54,7 @@
             </h1>
         </div>
         <div>
-    		<b id="userNameEL">{{currentUser.name}}({{currentUser.account}})</b>
+    		<b id="userNameEL">{{currentAccount.name}}({{currentAccount.account}})</b>
 
             <a href="javascript:" @click.prevent="logout">退出登录</a>
     	</div>
@@ -89,20 +89,20 @@
     const app = new Vue({
         el: "body>article",
         data: {
-            currentUser: null
+            currentAccount: null
         },
         created: function () {
-            const currentUser = sessionStorage.getItem("currentUser");
-            if (!currentUser) {
+            const currentAccount = sessionStorage.getItem("currentAccount");
+            if (!currentAccount) {
                 location.href = "/login/view.html";
                 return;
             }
 
-            this.currentUser = JSON.parse(currentUser);
+            this.currentAccount = JSON.parse(currentAccount);
         },
         methods: {
             "logout": function () {
-                const uid=this.currentUser.id;
+                const uid=this.currentAccount.id;
                 axios.delete(`/api/session/${uid}`).then(r => {
                     location.href = "/login/view.html";
                 });

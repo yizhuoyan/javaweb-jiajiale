@@ -20,7 +20,7 @@
         }
 
         .menu {
-            background: #99CC33;
+            background: hsl(80,60%,50%);
             display: flex;
             flex-flow: row wrap;
             align-items: center;
@@ -35,10 +35,10 @@
             text-align: center;
         }
         .menu > a.active{
-            background: #ffffff;
+            background: hsl(80,60%,90%);
         }
         .menu > a:hover {
-            background: #eeeeff;
+            background: hsl(80,60%,60%);
         }
     </style>
 
@@ -48,20 +48,23 @@
 <body>
 <article class="layout-vbox">
     <header class="layout-hbox-between">
+        <h4>
+            <img alt="Logo"
+                 height="32"
+                 src="/img/logo.32x32.png"
+                 style="vertical-align:baseline"
+                 width="32">
+            佳佳乐VIP消费查询系统
+        </h4>
         <div>
-            <h4>
-                <img alt="Logo"
-                     height="32"
-                     src="/img/logo.32x32.png"
-                     width="32">
-                佳佳乐VIP消费查询系统
-            </h4>
-        </div>
-        <div>
-            <b id="userNameEL">{{currentUser.name}}({{currentUser.account}})</b>
+            <span>
+            <img id="avatarEL" style="vertical-align:middle"
+                    src="/api/avatar" width="32" height="32"  alt="">
+            <b id="userNameEL">{{currentAccount.name}}({{currentAccount.account}})</b>
             <a @click.prevent="logout"
                href="javascript:">退出登录
             </a>
+            </span>
         </div>
     </header>
     <section class="menu" @click="handleMenuActive">
@@ -79,7 +82,7 @@
         </a>
     </section>
     <main class="grow layout-hcenter-vcenter">
-        <iframe name="mainFrame" src="/clerk/mine/view.html"></iframe>
+        <iframe name="mainFrame" src="/clerk/vip-query/view.html"></iframe>
     </main>
 
 </article>
@@ -90,15 +93,15 @@
     const app = new Vue({
         el: "body>article",
         data: {
-            currentUser: null
+            currentAccount: null
         },
         created: function () {
-            const currentUser = sessionStorage.getItem("currentUser");
-            if (!currentUser) {
+            const currentAccount = sessionStorage.getItem("currentAccount");
+            if (!currentAccount) {
                 location.href = "/login/view.html";
                 return;
             }
-            this.currentUser = JSON.parse(currentUser);
+            this.currentAccount = JSON.parse(currentAccount);
 
         },
         methods: {
@@ -111,16 +114,40 @@
               }
             },
             "logout": function () {
-                const uid = this.currentUser.id;
+                const uid = this.currentAccount.id;
                 axios.delete(`/api/session/${uid}`).then(r => {
                     location.href = "/login/view.html";
                 });
-
             }
         }
 
     });
 
+    /*
+    *接收其他子窗口事件
+     */
+    window.addEventListener("message",function (evt) {
+        //同源才处理
+        if(evt.origin===window.location.origin){
+            var evtHandlerMethodName=evt.data;
+            if(evtHandlerMethodName){
+                let handler=window["handle"+evtHandlerMethodName];
+                if(handler){
+                    handler.call(window);
+                }
+            }
+        }
+    },false);
+
+    //用于接收用户头像发送改变事件
+    window.handleAvatarChange=function () {
+        let avatarEL=document.getElementById("avatarEL");
+        let dataSrc=avatarEL.getAttribute("data-src");
+        if(!dataSrc){
+            avatarEL.setAttribute("data-src",dataSrc=avatarEL.src);
+        }
+        avatarEL.src=dataSrc+"?"+Date.now();
+    }
 
 </script>
 </body>

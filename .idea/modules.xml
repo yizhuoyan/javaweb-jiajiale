@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/common-util/common-util.iml" filepath="$PROJECT_DIR$/common-util/common-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiajiale.iml" filepath="$PROJECT_DIR$/jiajiale.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jiajiale-web/jiajiale-web.iml" filepath="$PROJECT_DIR$/jiajiale-web/jiajiale-web.iml" />
+    </modules>
+  </component>
+</project>

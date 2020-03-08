@@ -1,25 +1,25 @@
-.layout-column {
+.layout-vcell {
     display: flex;
-    flex-direction: column;
+    flex-direction: vcell;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
 }
-.layout-column-around{
+.layout-vcell-around{
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: vcell nowrap;
     justify-content: space-around;
     align-items: center;
 }
 
-.layout-column-between{
+.layout-vcell-between{
     display: flex;
-    flex-flow: column nowrap;
+    flex-flow: vcell nowrap;
     justify-content: space-between;
     align-items: center;
 }
 
-.layout-column > .grow
+.layout-vcell > .grow
 {
     flex: auto;
 }

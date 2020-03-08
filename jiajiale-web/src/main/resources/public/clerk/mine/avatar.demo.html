@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>头像照片</title>
+    <link rel="stylesheet" href="/css/common.css">
+</head>
+<body>
+<nav>
+    <ul class="breadcrumb">
+        <li>头像照片</li>
+    </ul>
+</nav>
+<article class="layout-hbox-around pad">
+    <section>
+        <form action="/api/avatar" method="post" enctype="multipart/form-data">
+            <strong>
+                仅支持JPG、GIF、PNG、JPEG、BMP格式，文件小于4M
+            </strong>
+
+            <input id="avatarEL" name="avatar" type="file" >
+
+            <button type="submit">上传头像</button>
+        </form>
+
+    </section>
+
+
+
+
+
+</article>
+<script src="/js/axios.min.js"></script>
+<script src="/js/vue.js"></script>
+<script src="/js/yi.toast.js"></script>
+<script>
+    const initRecommendAvatarList=function () {
+        let arr=[];
+        for(let i=1;i<16;i++){
+            arr.push({
+                id:i,
+                src:"/avatar/"+i+".jpg"
+            });
+        }
+        return arr;
+    };
+
+    const app=new Vue({
+        el:"body>article",
+        data:{
+            params:{
+
+            },
+            "recommendAvatarList":initRecommendAvatarList()
+        }
+    });
+
+
+
+
+</script>
+</body>
+</html>

@@ -4,12 +4,12 @@
     <script src="/js/axios.min.js"></script>
     <script>
         axios.get("/api/session")
-            .then(function (currentUser) {
-                sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
-                sessionStorage.setItem("token", currentUser.token);
-                let role = currentUser.role;
+            .then(function (currentAccount) {
+                sessionStorage.setItem("currentAccount", JSON.stringify(currentAccount));
+                sessionStorage.setItem("token", currentAccount.token);
+                let role = currentAccount.role;
                 if (!role) {
-                    role = "vip";
+                    role = "clerk";
                 }
                 location.href="/"+role+"/index/view.html";
             })

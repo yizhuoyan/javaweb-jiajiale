@@ -7,7 +7,7 @@
         <result property="account" column="account" />
         <result property="name" column="name" />
         <result property="password" column="password" />
-        <result property="avator" column="avator" />
+        <result property="avatar" column="avatar" />
         <result property="timeCreate" column="time_create" />
         <result property="timeLastAlterPassword" column="time_last_alter_password" />
         <result property="timeLastLogin" column="time_last_login" />
@@ -19,8 +19,8 @@
     </resultMap>
 
     <insert id="insert" >
-        insert into sys_account(account, name, password, avator, time_create, time_last_alter_password, time_last_login, remark, last_login_agent, last_login_ip, role, status)
-        values (#{account}, #{name}, #{password}, #{avator}, #{timeCreate}, #{timeLastAlterPassword}, #{timeLastLogin}, #{remark}, #{lastLoginAgent}, #{lastLoginIp}, #{role}, #{status})
+        insert into sys_account(account, name, password, avatar, time_create, time_last_alter_password, time_last_login, remark, last_login_agent, last_login_ip, role, status)
+        values (#{account}, #{name}, #{password}, #{avatar}, #{timeCreate}, #{timeLastAlterPassword}, #{timeLastLogin}, #{remark}, #{lastLoginAgent}, #{lastLoginIp}, #{role}, #{status})
     </insert>
     
     <delete id="delete">
@@ -40,8 +40,8 @@
             <if test="e.password != null">
                 password = #{e.password},
             </if>
-            <if test="e.avator != null">
-                avator = #{e.avator},
+            <if test="e.avatar != null">
+                avatar = #{e.avatar},
             </if>
             <if test="e.timeCreate != null">
                 time_create = #{e.timeCreate},

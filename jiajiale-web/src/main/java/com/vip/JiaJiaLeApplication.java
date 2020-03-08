@@ -3,8 +3,8 @@ package com.vip;
 import com.vip.dto.AccountContext;
 import com.vip.service.VipManageService;
 import com.vip.service.impl.VipManageServiceImpl;
-import com.vip.web.controller.spring.SessionInterceptor;
 import com.vip.web.controller.spring.StringTrimConverter;
+import com.vip.web.interceptor.SessionInterceptor;
 import org.hibernate.validator.HibernateValidator;
 import org.mybatis.spring.annotation.MapperScan;
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
@@ -12,9 +12,11 @@ import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,10 +44,12 @@ public class JiaJiaLeApplication implements WebMvcConfigurer {
     public Validator createValidator() {
         return Validation.byProvider(HibernateValidator.class)
                 .configure()
-                .failFast(false)
+                .failFast(true)
                 .buildValidatorFactory()
                 .getValidator();
     }
+
+
 
     @Override
     public void addFormatters(FormatterRegistry registry) {
@@ -59,7 +63,7 @@ public class JiaJiaLeApplication implements WebMvcConfigurer {
      *
      * @param registry
      */
-    public void addInterceptors1(InterceptorRegistry registry) {
+    public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new SessionInterceptor())
                 .addPathPatterns("/api/**")
                 .excludePathPatterns("/api/session");

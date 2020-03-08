@@ -2,6 +2,7 @@ package com.vip.dto;
 
 import java.time.LocalDateTime;
 
+import com.vip.entity.SysAccountRole;
 import lombok.Data;
 /**
  * 用户上下文
@@ -15,13 +16,12 @@ public class AccountContext {
 	private String account;		
 	private String name;		
 	private String avatar;
-	private LocalDateTime timeCreate;		
-	private LocalDateTime timeLastAlterPassword;		
-	private LocalDateTime timeLastLogin;		
+	private LocalDateTime createTime;
+	private LocalDateTime lastModifyPasswordTime;
+	private LocalDateTime lastLoginTime;
 	private boolean isFirstLogin;
-	private String remark;		
 	private String lastLoginIp;
-    private String lastLoginDevice;
+    private String lastLoginAgent;
     //所属角色
     private String role;
     private String token;
@@ -33,6 +33,10 @@ public class AccountContext {
 		AccountContext current=ACCOUNT_HOLDER.get();
 		return current.getId();
 	}
+
+	public void setRole(Integer role){
+	    this.role= SysAccountRole.valueOf(role).toString().toLowerCase();
+    }
 	
 	/**
 	 * 保存当前用户对象

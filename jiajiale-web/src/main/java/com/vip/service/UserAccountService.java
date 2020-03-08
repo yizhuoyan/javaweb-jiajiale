@@ -1,7 +1,9 @@
 package com.vip.service;
 
+import com.vip.ao.AvatarAo;
 import com.vip.ao.ModifyPasswordAo;
 import com.vip.dto.AccountContext;
+import com.vip.dto.AvatarDto;
 
 public interface UserAccountService extends CommonService {
 	/**
@@ -15,11 +17,32 @@ public interface UserAccountService extends CommonService {
 	/**
 	 * 修改密码
 	 * @param id 账号id
-	 * @param oldPassword 旧密码
-	 * @param newPasswrod 新密码
-	 * @param newPasswordConfirm 新密码确认
+     * @param ao
 	 * @throws Exception
 	 */
     void updatePassword(String id,ModifyPasswordAo ao)throws Exception;
-    
+
+    /**
+     * 改变头像
+     * @param id 账号id
+     * @param ao
+     * @throws Exception
+     */
+    void changeAvatar(String id,AvatarAo ao)throws Exception;
+    /**
+     * 改变头像
+     * @param id 账号id
+     * @param ao
+     * @throws Exception
+     */
+    void changeName(String id,String name)throws Exception;
+
+    /**
+     * 获取用户头像
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    AvatarDto loadAvatar(String id)throws Exception;
+
 }

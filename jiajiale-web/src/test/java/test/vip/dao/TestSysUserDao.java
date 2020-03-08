@@ -23,7 +23,7 @@ public class TestSysUserDao extends AbstractSpringTest {
 		e.setId("id");
 		e.setAccount("account");
 		e.setPassword("password");
-		e.setAvatar("avator");
+		e.setAvatar("avatar");
 		e.setCreateTime(LocalDateTime.now());
 		e.setLastLoginTime(LocalDateTime.now());
 		e.setRemark("remark");

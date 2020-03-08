@@ -15,19 +15,21 @@
     <section>
         <div>
             <strong>
-                仅支持JPG、GIF、PNG、JPEG、BMP格式，文件小于4M
+                仅支持JPG、GIF、PNG、JPEG格式，文件小于4M
             </strong>
             <label>
-            <input id="avatarEL" type="file" style="display: none">
-            <button onclick="avatarEL.click()" >本地选择</button>
+            <input  id="avatarEL" accept=".jpg,.gif,.png,.jpeg" @change="handleAvatarFileChange" type="file" style="display: none">
+            <button   onclick="avatarEL.click()" >本地选择切换</button>
             </label>
         </div>
-        <div class="layout-hcenter-vcenter">
-            <img width="200" height="200" @src="params.avator">
+
+        <div class="layout-hcenter-vcenter pad">
+            <img width="200" height="200" :src="currentAvatarImage">
         </div>
+
         <div>
             <h6>推荐头像</h6>
-            <div class="layout-hcell" >
+            <div class="layout-hcell" @click="handleRecommendAvatarClick" >
                 <img style="margin: 1em" v-for="a in recommendAvatarList" :id="a.id" :src="a.src" width="50" height="50" :alt="a.src">
             </div>
         </div>
@@ -37,17 +39,20 @@
         <p>
             你上传的图片会自动生成2种尺寸，请注意小尺寸的头像是否清晰
         </p>
-        <p>
+        <div>
         <figure>
-            <img  width="100" height="100" alt="">
+            <img  width="100" height="100" :src="currentAvatarImage" alt="">
             <figcaption>100*100像素</figcaption>
         </figure>
-        </p>
-        <p>
+        </div>
+        <div>
         <figure>
-            <img  width="50" height="50" alt="">
+            <img  width="50" height="50" :src="currentAvatarImage" alt="">
             <figcaption>50*50像素</figcaption>
         </figure>
+        </div>
+        <p>
+            <button type="button" :disabled="confirmUploadBtn.disabled" @click="handleConfirmUpload">{{confirmUploadBtn.text}}</button>
         </p>
     </section>
 
@@ -73,12 +78,100 @@
     const app=new Vue({
         el:"body>article",
         data:{
-            params:{
+            confirmUploadBtn:{
+                disabled:true,
+                text:"确定上传头像"
+            },
+            selectFile:null,
+            currentAvatarImage:"/api/avatar",
+            recommendAvatarList:initRecommendAvatarList()
+        },
+        methods:{
+            "handleRecommendAvatarClick":function (evt) {
+                let targetTag=evt.target;
+                if(targetTag.tagName==="IMG"){
+                    app.currentAvatarImage=targetTag.src;
+                    app.selectFile=targetTag.src;
+                    app.confirmUploadBtn.disabled=false;
+                }
+            },
+            "handleConfirmUpload":function (evt) {
+                let selectFile=app.selectFile;
+                if(selectFile===null){
+                    toast("请先选择头像");
+                    return;
+                }
+                if(typeof selectFile==="string"){
+                    uploadRecommendAvatar(selectFile);
+                }else{
+                    uploadLocalAvatar(selectFile);
+                }
 
             },
-            "recommendAvatarList":initRecommendAvatarList()
+            "handleAvatarFileChange":function (evt) {
+                let f=evt.target.files[0];
+                let fr=new FileReader();
+                app.selectFile=f;
+                fr.onload=function(evt){
+                    app.currentAvatarImage=this.result;
+                    app.confirmUploadBtn.disabled=false;
+                };
+                fr.readAsDataURL(f);
+            }
+        },
+        created:function () {
+
         }
     });
+
+    /**
+    *上传推荐头像
+     */
+    let uploadRecommendAvatar=function (recommendAvatarURL) {
+        app.confirmUploadBtn.disabled=true;
+        let param = new FormData();
+        param.append("avatar",recommendAvatarURL);
+        axios.put('/api/account/avatar',param).then(function (resp) {
+            if(resp.code==="ok"){
+                toast("改变头像成功");
+                //通知头像发送改变
+                window.top.postMessage("AvatarChange","*");
+                return;
+            }
+            toast(resp.message);
+        }).finally(function () {
+            app.confirmUploadBtn.text="确定上传头像";
+        });
+    };
+    /**
+     * 上传本地文件
+     * @param localFile
+     */
+    let uploadLocalAvatar=function (localFile) {
+        app.confirmUploadBtn.disabled=true;
+        let param = new FormData();
+        //通过append向form对象添加数据
+        param.append("avatar",localFile);
+        axios.post('/api/avatar',param,{
+            //添加请求头
+            headers:{'Content-Type':'multipart/form-data'},
+            //添加上传进度监听事件
+            onUploadProgress: function (e) {
+                let completeProgress = ((e.loaded / e.total * 100) | 0) + "%";
+                app.confirmUploadBtn.text="上传中("+completeProgress+")";
+            }
+        }).then(function (resp) {
+            if(resp.code==="ok"){
+                toast("改变头像成功");
+                //通知头像发送改变
+                window.top.postMessage("AvatarChange","*");
+                return;
+            }
+            toast(resp.message);
+        }).finally(function () {
+            app.confirmUploadBtn.text="确定上传头像";
+        });
+    }
 
 
 
