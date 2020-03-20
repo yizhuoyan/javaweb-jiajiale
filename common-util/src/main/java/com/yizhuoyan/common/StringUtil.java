@@ -86,8 +86,8 @@ public interface StringUtil {
 		}
 	}
 
-	public default int parseInt(String s) {
-		return Integer.parseInt(s);
+	public default Integer parseInt(String s) {
+		return parseInt(s,null);
 	}
 
 	public default String escapeForSqlLike(String s) {

@@ -17,7 +17,13 @@
             padding:0 1em;
             color: #fefefe;
         }
-
+        article> footer {
+            color: #fefefe;
+            text-align: center;
+            padding-top: 15px;
+            padding-bottom: 15px;
+            background: #333366;
+        }
 
     </style>
 
@@ -41,10 +47,12 @@
             <a href="javascript:" @click.prevent="logout">退出登录</a>
     	</div>
     </header>
-    <main class="grow">
-        <iframe name="mainFrame" src="index-welcome.html"></iframe>
+    <main class="grow" style="overflow: auto">
+        <iframe name="mainFrame" src="welcome.html"></iframe>
     </main>
-
+    <footer>
+        <strong>XXXX公司版权所有</strong>
+    </footer>
 </article>
 
 <script>

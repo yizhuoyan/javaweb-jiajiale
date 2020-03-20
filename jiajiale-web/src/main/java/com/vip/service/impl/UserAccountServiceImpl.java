@@ -9,6 +9,7 @@ import com.vip.dto.AvatarDto;
 import com.vip.entity.SysAccountEntity;
 import com.vip.service.UserAccountService;
 import com.yizhuoyan.common.BeanMap;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.support.ResourcePatternResolver;
@@ -16,8 +17,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 @Service
+@Slf4j
 public class UserAccountServiceImpl implements UserAccountService {
 	@Autowired
     SysAccountDao udao;
@@ -85,13 +90,14 @@ public class UserAccountServiceImpl implements UserAccountService {
     public void changeName(@NotNull String id, String newName)
             throws Exception {
         // 1 验证参数
-        String oldPassword = $("新名称", newName);
+        newName = $("新名称", newName);
         SysAccountEntity u = udao.select("id", id);
         // 1.2 id存在
         assertNotNull("{0}不存在", u,id);
         // 1.3 old密码必须和原密码一致
         assertLessThan("名称长度",newName,16);
         // 1.4 新密码不能和旧密码一样
+        log.debug("新名称{}和旧名称{}", u.getName(), newName);
         assertNotEquals("新名称不能和旧名称一样", u.getName(), newName);
         // 2 执行业务逻辑
         // 2.1 更新数据库
@@ -135,6 +141,13 @@ public class UserAccountServiceImpl implements UserAccountService {
             avatarDto=createDefaultAvatar(id);
         }else{
             avatarDto = objectMapper.readValue(avatarJsonString, AvatarDto.class);
+            //判断本地文件是否存在
+            //是否存放在本地服务器
+            if(avatarDto.isLocalSave()) {
+                if (Files.notExists(Paths.get(avatarDto.getSaveLocation()))) {
+                    return createDefaultAvatar(id);
+                }
+            }
         }
         return avatarDto;
     }

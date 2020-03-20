@@ -62,6 +62,7 @@ public class SysAccountEntity implements Serializable {
     * 创建人
     */
     private String createAccountId;
+    private SysAccountEntity createAccount;
     /**
     * 创建时间
     */

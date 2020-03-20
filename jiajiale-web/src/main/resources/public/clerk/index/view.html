@@ -60,7 +60,12 @@
             <span>
             <img id="avatarEL" style="vertical-align:middle"
                     src="/api/avatar" width="32" height="32"  alt="">
-            <b id="userNameEL">{{currentAccount.name}}({{currentAccount.account}})</b>
+            <b>
+                {{currentAccount.name}}
+                <small>
+                    ({{currentAccount.account}})
+                </small>
+            </b>
             <a @click.prevent="logout"
                href="javascript:">退出登录
             </a>
@@ -129,7 +134,7 @@
     window.addEventListener("message",function (evt) {
         //同源才处理
         if(evt.origin===window.location.origin){
-            var evtHandlerMethodName=evt.data;
+            let evtHandlerMethodName=evt.data;
             if(evtHandlerMethodName){
                 let handler=window["handle"+evtHandlerMethodName];
                 if(handler){
@@ -139,7 +144,7 @@
         }
     },false);
 
-    //用于接收用户头像发送改变事件
+    //用于接收用户头像发生改变事件
     window.handleAvatarChange=function () {
         let avatarEL=document.getElementById("avatarEL");
         let dataSrc=avatarEL.getAttribute("data-src");
@@ -147,7 +152,13 @@
             avatarEL.setAttribute("data-src",dataSrc=avatarEL.src);
         }
         avatarEL.src=dataSrc+"?"+Date.now();
-    }
+    };
+
+    //用于接收帐号名称发生改变事件
+    window.handleAccountNameChange=function () {
+        const currentAccount = JSON.parse(sessionStorage.getItem("currentAccount"));
+        app.currentAccount.name=currentAccount.name;
+    };
 
 </script>
 </body>

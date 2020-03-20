@@ -5,38 +5,6 @@
     <title>主页</title>
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="/css/common.css">
-    <style>
-
-        article{
-            height: 100vh;
-        }
-        .menu {
-            width: 200px;
-            background: #336699;
-            box-sizing: border-box;
-            text-align: center;
-            list-style: none;
-            color: #FFFFFF;
-        }
-        .menu>li{
-
-        }
-        .menu>li>a{
-            padding: 10px 0;
-            display: block;
-            border-bottom: 1px solid #0e90d2;
-            text-decoration: none;
-        }
-        .menu>li>a.active{
-            background-color: #ffffff;
-            color: #000000;
-        }
-        .menu>li>a:hover{
-            background: #2a85a0;
-        }
-    </style>
-
-
 
 </head>
 <body>
@@ -45,40 +13,84 @@
         <li>个人信息</li>
     </ul>
 </nav>
-<article class="layout-hbox">
-    个人信息
+<menu>
+    <button form="modFormEL" type="submit">确定修改</button>
+</menu>
+<main>
+<form @submit.prevent="doModifySubmit" class="label8em" id="modFormEL">
+    <div>
+        <p>
+            <label for="empNoEL">*员工编号：</label>
+            <input id="empNoEL" v-model="params.empNo" name="empNo" placeholder="" type="text">
+        </p>
+        <p>
+            <label for="realNameEL">*真实姓名：</label>
+            <input id="realNameEL" v-model="params.realName" name="realName" placeholder="" type="text">
+        </p>
+    </div>
+    <div>
+        <p>
+            <label for="sexEL">*性别：</label>
+            <select id="sexEL" v-model="params.sex" name="sex">
+                <option value="1">男</option>
+                <option value="0">女</option>
+            </select>
+        </p>
+        <p>
+            <label for="birthdayEL">*生日：</label>
+            <input id="birthdayEL" v-model="params.birthday" name="birthday" placeholder="" type="date">
+        </p>
+    </div>
 
-</article>
+        <p>
+            <label for="workMobileEL">*工作手机：</label>
+            <input id="workMobileEL" v-model="params.workMobile" name="workMobile" placeholder="" type="text">
+        </p>
+
+        <p>
+            <label for="workEmailEL">*工作邮箱：</label>
+            <input id="workEmailEL" v-model="params.workEmail" name="workEmail" placeholder="" type="text">
+        </p>
+
+</form>
+</main>
 <script src="/js/vue.js"></script>
-<script src="/js/axios.min.js"></script>
 <script src="/js/yi.toast.js"></script>
+<script src="/js/axios.min.js"></script>
 <script>
-    const app = new Vue({
-        el: "body>article",
-        data: {
-            currentAccount: null
-        },
-        created: function () {
-            const currentAccount = sessionStorage.getItem("currentAccount");
-            if (!currentAccount) {
-                location.href = "/login/view.html";
-                return;
-            }
+    const id=location.hash.substr(1);
 
-            this.currentAccount = JSON.parse(currentAccount);
+    const app = new Vue({
+        el: "main",
+        data: {
+            params: {}
         },
         methods: {
-            "handleMenuActive":function (evt) {
-                let target=evt.target;
-                if(target.tagName==="A"){
-                    document.querySelector(".menu .active").classList.remove("active");
-                    target.classList.add("active");
-                }
+            doModifySubmit: function () {
+                axios.put("/api/clerk/"+id, this.params).then(function (resp) {
+                    if (resp.code !== "ok") {
+                        toast(resp.message);
+                    } else {
+                        toast("修改成功，请返回!");
+                    }
+                });
+            },
+            loadClerk:function(){
+                axios.get('/api/clerk/'+id).then(function (resp) {
+                    if (resp.code !== "ok") {
+                        toast(resp.message);
+                    } else {
+                        console.log(resp);
+                        app.params = resp.data;
+                    }
+                });
             }
+        },
+        created: function () {
+
+            this.loadClerk();
         }
-
     });
-
 
 </script>
 </body>

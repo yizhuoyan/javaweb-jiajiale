@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vip.dao.EmpClerkDao">
+
+    <resultMap type="EmpClerkEntity" id="EmpClerkEntityMap">
+        <id property="id" column="id" />
+        <result property="realName" column="real_name" />
+        <result property="sex" column="sex" />
+        <result property="empNo" column="emp_no" />
+        <result property="workMobile" column="work_mobile" />
+        <result property="workEmail" column="work_email" />
+        <result property="birthday" column="birthday" />
+        <association property="account" fetchType="lazy" select="com.vip.dao.SysAccountDao.selectById" column="id" ></association>
+    </resultMap>
+
+    <insert id="insert" >
+        insert into Emp_clerk(id, real_name, sex, emp_no, work_mobile, work_email, birthday)
+        values (#{id}, #{realName}, #{sex}, #{empNo}, #{workMobile}, #{workEmail}, #{birthday})
+    </insert>
+    
+    <delete id="delete">
+        delete from Emp_clerk 
+        where id = #{param1}
+    </delete> 
+    
+    <update id="update">
+        update Emp_clerk
+        <set>
+            <if test="param2.realName != null">
+                real_name = #{param2.realName},
+            </if>
+            <if test="param2.sex != null">
+                sex = #{param2.sex},
+            </if>
+            <if test="param2.empNo != null">
+                emp_no = #{param2.empNo},
+            </if>
+            <if test="param2.workMobile != null">
+                work_mobile = #{param2.workMobile},
+            </if>
+            <if test="param2.workEmail != null">
+                work_email = #{param2.workEmail},
+            </if>
+            <if test="param2.birthday != null">
+                birthday = #{param2.birthday},
+            </if>
+        </set>
+        where id = #{param1}
+    </update>
+    
+    <select id="selectById" resultMap="EmpClerkEntityMap">
+        select *   
+        from Emp_clerk
+        where id = #{param1}
+    </select>
+    
+   
+    <select id="selectOne" resultMap="EmpClerkEntityMap">
+        select *   
+        from Emp_clerk
+        where ${param1}=#{param2}
+        limit 0,1
+    </select>
+    <select id="selectMany" resultMap="EmpClerkEntityMap">
+        select *   
+        from Emp_clerk
+        where  ${param1}=#{param2}
+        <if test="param3!=null">
+            order by ${param3}
+        </if>
+    </select>
+    
+    <select id="exists" resultType="boolean">
+        select count(*)   
+        from Emp_clerk
+        where ${param1}=#{param2}
+    </select>
+    
+    <select id="selectAll" resultMap="EmpClerkEntityMap">
+        select *
+        from Emp_clerk
+        <if test="param1!=null">
+            order by ${param1}
+        </if>
+    </select>
+
+    <!--其他查询-->
+    
+
+
+
+</mapper>

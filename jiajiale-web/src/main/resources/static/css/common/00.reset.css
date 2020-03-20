@@ -6,14 +6,18 @@ body {
     overflow: auto;
     font-size:14px;
     min-height:100vh;
-    font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei";
+    font-family: "Microsoft YaHei", 微软雅黑, "MicrosoftJhengHei", serif;
     background: #ffffff;
     box-sizing: border-box;
 }
 small {
     font-size: 80%;
 }
-
+ul,li{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
 
 
 

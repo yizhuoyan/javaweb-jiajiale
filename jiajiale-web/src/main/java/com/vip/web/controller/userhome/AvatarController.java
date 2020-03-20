@@ -1,4 +1,4 @@
-package com.vip.web.controller;
+package com.vip.web.controller.userhome;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 import com.vip.ao.AvatarAo;
@@ -42,6 +42,7 @@ public class AvatarController  {
             //用户头像存放路径
             resp.setContentType(avatarDto.getContentType());
             File avatar=new File(avatarDto.getSaveLocation());
+
             try(FileInputStream in=new FileInputStream(avatar);
                 ServletOutputStream out=resp.getOutputStream();
             ){

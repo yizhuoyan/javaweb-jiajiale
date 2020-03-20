@@ -111,10 +111,14 @@
         methods:{
             "handleChangeAccountName":function (evt) {
                 axios.put("/api/account/name",{
-                    name:"name"
+                    name:this.currentAccount.name
                 }).then(function (resp) {
                     if(resp.code==="ok"){
                         toast("修改成功");
+                        //更新本地数据
+                        sessionStorage.setItem("currentAccount",JSON.stringify(app.currentAccount));
+                        //通过其他视图帐号名称修改成功
+                        window.top.postMessage("AccountNameChange","*");
                         return;
                     }
                     toast(resp.message);

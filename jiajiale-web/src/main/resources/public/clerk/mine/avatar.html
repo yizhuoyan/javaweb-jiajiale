@@ -134,7 +134,7 @@
         axios.put('/api/account/avatar',param).then(function (resp) {
             if(resp.code==="ok"){
                 toast("改变头像成功");
-                //通知头像发送改变
+                //通知头像发生改变
                 window.top.postMessage("AvatarChange","*");
                 return;
             }
@@ -163,7 +163,7 @@
         }).then(function (resp) {
             if(resp.code==="ok"){
                 toast("改变头像成功");
-                //通知头像发送改变
+                //通知头像发生改变
                 window.top.postMessage("AvatarChange","*");
                 return;
             }

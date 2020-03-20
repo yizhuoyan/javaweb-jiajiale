@@ -20,23 +20,13 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/api")
 @Validated
-public class AccountController {
+public class SessionController {
 	@Autowired
 	UserAccountService accountService;
 
 
 
-    @PatchMapping(path = "/account/password/{id}")
-	public JSONResponse modifyUserPassword(@PathVariable String id, ModifyPasswordAo ao) throws Exception {
-		accountService.updatePassword(id, ao);
-		return JSONResponse.ok();
-	}
 
-    @PatchMapping(path = "/account/avatar/{id}")
-    public JSONResponse modifyUserAvatar(@PathVariable String id, ModifyPasswordAo ao) throws Exception {
-        accountService.updatePassword(id, ao);
-        return JSONResponse.ok();
-    }
 
     @PostMapping("/session")
     public JSONResponse login(String account,
@@ -75,13 +65,5 @@ public class AccountController {
         return ResponseEntity.status(HttpStatus.GONE).build();
     }
 
-    @PutMapping("/account/name")
-    public JSONResponse setRecommendAvatar(String name
-            , HttpSession session)throws Exception{
-        //获取当前登录用户
-        AccountContext ac= (AccountContext) session.getAttribute(AccountContext.class.getName());
-        //更新帐号
-        accountService.changeName(ac.getId(),name);
-        return JSONResponse.ok();
-    }
+
 }
